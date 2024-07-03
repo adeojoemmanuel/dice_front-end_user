@@ -1,33 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import detectEthereumProvider from '@metamask/detect-provider';
+
+declare global {
+  interface Window {
+    ethereum: {
+      isMetaMask?: boolean;
+      request: (args: { method: string; params?: any[] }) => Promise<any>;
+      on: (event: string, callback: (...args: any[]) => void) => void;
+      removeListener: (event: string, callback: (...args: any[]) => void) => void;
+    };
+  }
+}
 
 const EvmWalletConnect = () => {
-   const [account, setAccount] = useState<string | null>(null);
-   const [error, setError] = useState<string | null>(null);
+  const [account, setAccount] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    const checkWalletConnection = async () => {
-      const provider = await detectEthereumProvider();
-      if (provider) {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        if (accounts.length > 0) {
-          setAccount(accounts[0]);
+    const initializeWallet = async () => {
+      try {
+        const { ethereum } = window;
+        if (ethereum && ethereum.isMetaMask) {
+          const accounts = await ethereum.request({ method: 'eth_accounts' });
+          if (accounts.length > 0) {
+            setAccount(accounts[0]);
+          }
+          setInitialized(true);
+          setError(null);
+        } else {
+          setError('MetaMask not detected');
+          setInitialized(true);
         }
-      } else {
-        setError('MetaMask not detected');
+      } catch (err) {
+        setError('Failed to connect wallet');
+        setInitialized(true);
       }
     };
 
-    checkWalletConnection();
-  }, []);
+    if (!initialized) {
+      initializeWallet();
+    }
+  }, [initialized]);
 
   const connectWallet = async () => {
     try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      setAccount(accounts[0]);
-      setError(null);
-    } catch (err) {
-      setError('Failed to connect wallet');
+      const { ethereum } = window;
+      if (ethereum && ethereum.isMetaMask) {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        setAccount(accounts[0]);
+        setError(null);
+      } else {
+        setError('MetaMask not detected');
+      }
+    } catch (err: any) {
+      if (err.code === 4001) {
+        setError('User rejected the connection request');
+      } else {
+        setError('Failed to connect wallet');
+      }
     }
   };
 
@@ -38,7 +68,9 @@ const EvmWalletConnect = () => {
           <p>Connected account: {account}</p>
         </div>
       ) : (
-        <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={connectWallet}>Connect Wallet</button>
+        <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={connectWallet}>
+          Connect Wallet
+        </button>
       )}
       {error && <p>{error}</p>}
     </div>

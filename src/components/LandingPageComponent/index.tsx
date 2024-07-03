@@ -9,6 +9,7 @@ import WithdrawComponent from "../WithdrawComponent";
 import DepositComponent from "../DepositComponent";
 import usePersonalInfo from "../../hooks/usePersonalInfo";
 import EvmWalletConnect from './../evm-wallet-connect/connect-wallet';
+
 import "./style.css";
 
 const LandingPageComponent = () => {
@@ -195,8 +196,8 @@ const LandingPageComponent = () => {
             />
             <BettingComponent />
             <BettingStatus />
+            <EvmWalletConnect />
           </section>
-          <EvmWalletConnect />
         </main>
       ) : tapFlag === 2 ? (
         <DepositComponent />

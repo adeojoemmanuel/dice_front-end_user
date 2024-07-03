@@ -11,15 +11,6 @@ import {
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
-  GlowWalletAdapter,
-  PhantomWalletAdapter,
-  SlopeWalletAdapter,
-  SolflareWalletAdapter,
-  SolletExtensionWalletAdapter,
-  SolletWalletAdapter,
-  TorusWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
-import {
   createDefaultAuthorizationResultCache,
   SolanaMobileWalletAdapter,
 } from "@solana-mobile/wallet-adapter-mobile";
@@ -37,6 +28,7 @@ import LandingPage from "./pages/LandingPage";
 import DepositPage from "./pages/DepositPage";
 import WithdrawPage from "./pages/WithdrawPage";
 import "./App.css";
+import { PhantomWalletAdapter, GlowWalletAdapter, SlopeWalletAdapter, SolflareWalletAdapter, SolletWalletAdapter, SolletExtensionWalletAdapter, TorusWalletAdapter } from "@solana/wallet-adapter-wallets";
 
 function App() {
   const network = WalletAdapterNetwork.Mainnet;
@@ -57,6 +49,8 @@ function App() {
     ],
     [network]
   );
+  
+
   return (
     <SocketContextProvider>
       <ConnectionProvider endpoint={endpoint}>
