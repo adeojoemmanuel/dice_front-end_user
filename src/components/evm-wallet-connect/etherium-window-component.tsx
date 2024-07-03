@@ -43,26 +43,28 @@ const EvmWalletConnect = () => {
     }
   }, [initialized]);
 
+ 
+
   const connectWallet = async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum && ethereum.isMetaMask) {
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        setAccount(accounts[0]);
-        setError(null);
-      } else {
-        setError('MetaMask not detected');
+    if (typeof window.ethereum !== 'undefined') {
+      try {
+        const accounts: any = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        console.log(accounts);
+      } catch (error: any) {
+        if (error.code === 4001) {
+          // EIP-1193 userRejectedRequest error
+          console.log('User rejected the request.');
+          // Show a user-friendly message in the UI
+          alert('Please connect to the wallet to proceed.');
+        } else {
+          console.error(error);
+        }
       }
-    } catch (err: any) {
-      console.error('Error during wallet connection:', err);
-      if (err.code === 4001) {
-        setError('User rejected the connection request');
-      } else {
-        setError(`Failed to connect wallet: ${err.message}`);
-      }
+    } else {
+      alert('MetaMask is not installed. Please install it to proceed.');
     }
   };
-
+  
   const disconnectWallet = () => {
     setAccount(null);
     setError(null);
@@ -76,7 +78,7 @@ const EvmWalletConnect = () => {
     }
   };
 
-  return (
+  return (  
     <div>
       {account ? (
         <div>
@@ -89,7 +91,7 @@ const EvmWalletConnect = () => {
         </div>
       ) : (
         <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={forceConnectWallet}>
-          Connect Wallet
+          Connect Wallet using EVM window
         </button>
       )}
       {error && <p>{error}</p>}

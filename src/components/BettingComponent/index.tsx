@@ -6,7 +6,8 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import usePersonalInfo from "../../hooks/usePersonalInfo";
 import Rolling from "../Rolling";
 import BettingInput from "../BettingInput";
-import EvmWalletConnect from "../evm-wallet-connect/connect-wallet";
+import EvmWalletConnect from "../evm-wallet-connect/etherium-window-component";
+import MetaMaskWalletButton from './../evm-wallet-connect/etherium-window-component'
 import "./style.css";
 
 const BettingComponent = () => {
@@ -275,7 +276,8 @@ const BettingComponent = () => {
                 Deposit
               </a>
             </div>
-            <EvmWalletConnect />
+            {/* <EvmWalletConnect /> */}
+            <MetaMaskWalletButton />
           </div>
         </div>
         <div className="col-lg-6 col-md-12 move-first">
