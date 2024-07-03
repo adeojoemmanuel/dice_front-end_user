@@ -6,6 +6,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import usePersonalInfo from "../../hooks/usePersonalInfo";
 import Rolling from "../Rolling";
 import BettingInput from "../BettingInput";
+import EvmWalletConnect from "../evm-wallet-connect/connect-wallet";
 import "./style.css";
 
 const BettingComponent = () => {
@@ -274,6 +275,7 @@ const BettingComponent = () => {
                 Deposit
               </a>
             </div>
+            <EvmWalletConnect />
           </div>
         </div>
         <div className="col-lg-6 col-md-12 move-first">
@@ -295,177 +297,28 @@ const BettingComponent = () => {
         multiAmount={multiAmount}
         divideAmount={divideAmount}
         maxAmount={maxAmount}
+        betGreen={betGreen}
+        betBlue={betBlue}
+        betSame={betSame}
       />
-      {isMobile ? (
-        <div className="team-profile mt-5">
-          <div className="row">
-            <div
-              className="col-4 mb-5 animated"
-              data-animation="jello"
-              data-animation-delay="0.8s"
+      {isMobile && (
+        <div className="footer row pt-5 pb-5">
+          <div className="col-md-12 text-center">
+            <a href="https://discord.gg/NuNkm6B" className="m-3">
+              <i className="fa fa-discord text-muted fa-2x"></i>
+            </a>
+            <a
+              href="https://twitter.com/YourAccount"
+              className="m-3"
             >
-              <div className="d-flex flex-column team-member">
-                <button
-                  className="team-img float-left mb-2"
-                  data-toggle="modal"
-                  data-target="#teamUser9"
-                  onClick={betGreen}
-                >
-                  <img
-                    src="theme-assets/images/green.png"
-                    alt="team-profile-1"
-                    className="rounded-circle"
-                    width="80"
-                  />
-                </button>
-                <div className="profile align-self-center">
-                  <div className="name">PLACE BET</div>
-                  <div className="name">WIN &amp; 2x</div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="col-4 mb-5 animated"
-              data-animation="jello"
-              data-animation-delay="0.9s"
+              <i className="fa fa-twitter text-muted fa-2x"></i>
+            </a>
+            <a
+              href="https://www.youtube.com/channel/YourAccount"
+              className="m-3"
             >
-              <div className="d-flex flex-column team-member">
-                <button
-                  className="team-img float-left mb-2"
-                  data-toggle="modal"
-                  data-target="#teamUser6"
-                  onClick={betSame}
-                >
-                  <img
-                    src="theme-assets/images/dice.png"
-                    alt="Andrei O"
-                    className="rounded-circle"
-                    width="80"
-                  />
-                </button>
-                <div className="profile align-self-center">
-                  <div className="name">PLACE BET</div>
-                  <div className="name">WIN &amp; 5x</div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="col-4 mb-5 animated"
-              data-animation="jello"
-              data-animation-delay="1.0s"
-            >
-              <div className="d-flex flex-column team-member">
-                <button
-                  className="team-img float-left mb-2"
-                  data-toggle="modal"
-                  data-target="#teamUser2"
-                  onClick={betBlue}
-                >
-                  <img
-                    src="theme-assets/images/blue.png"
-                    alt="team-profile-1"
-                    className="rounded-circle"
-                    width="80"
-                  />
-                </button>
-                <div className="profile align-self-center">
-                  <div className="name">PLACE BET</div>
-                  <div className="name">WIN &amp; 2x</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="team-profile mt-5">
-          <div className="row">
-            <div
-              className={
-                betColor === "green"
-                  ? "col-sm-12 col-md-6 col-lg-4 mb-5 animated betting"
-                  : "col-sm-12 col-md-6 col-lg-4 mb-5 animated"
-              }
-              data-animation="jello"
-              data-animation-delay="0.8s"
-            >
-              <div className="d-flex team-member">
-                <button
-                  className="team-img float-left mr-3"
-                  data-toggle="modal"
-                  data-target="#teamUser9"
-                  onClick={betGreen}
-                >
-                  <img
-                    src="theme-assets/images/green.png"
-                    alt="team-profile-1"
-                    className="rounded-circle"
-                    width="128"
-                  />
-                </button>
-                <div className="profile align-self-center">
-                  <div className="name">PLACE BET</div>
-                  <div className="name">WIN &amp; 2x</div>
-                </div>
-              </div>
-            </div>
-            <div
-              className={
-                betColor === "same"
-                  ? "col-sm-12 col-md-6 col-lg-4 mb-5 animated betting"
-                  : "col-sm-12 col-md-6 col-lg-4 mb-5 animated"
-              }
-              data-animation="jello"
-              data-animation-delay="0.9s"
-            >
-              <div className="d-flex team-member">
-                <button
-                  className="team-img float-left mr-3"
-                  data-toggle="modal"
-                  data-target="#teamUser6"
-                  onClick={betSame}
-                >
-                  <img
-                    src="theme-assets/images/dice.png"
-                    alt="Andrei O"
-                    className="rounded-circle"
-                    width="128"
-                  />
-                </button>
-                <div className="profile align-self-center">
-                  <div className="name">PLACE BET</div>
-                  <div className="name">WIN &amp; 5x</div>
-                </div>
-              </div>
-            </div>
-            <div
-              className={
-                betColor === "blue"
-                  ? "col-sm-12 col-md-6 col-lg-4 mb-5 animated betting"
-                  : "col-sm-12 col-md-6 col-lg-4 mb-5 animated"
-              }
-              data-animation="jello"
-              data-animation-delay="1.0s"
-            >
-              <div className="d-flex team-member">
-                <button
-                  className="team-img float-left mr-3"
-                  data-toggle="modal"
-                  data-target="#teamUser2"
-                  onClick={betBlue}
-                >
-                  <img
-                    src="theme-assets/images/blue.png"
-                    alt="team-profile-1"
-                    className="rounded-circle"
-                    width="128"
-                  />
-                </button>
-                <div className="profile align-self-center">
-                  <div className="name">PLACE BET</div>
-                  <div className="name">WIN &amp; 2x</div>
-                </div>
-              </div>
-            </div>
+              <i className="fa fa-youtube text-muted fa-2x"></i>
+            </a>
           </div>
         </div>
       )}

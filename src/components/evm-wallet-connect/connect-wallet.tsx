@@ -31,7 +31,8 @@ const EvmWalletConnect = () => {
           setError('MetaMask not detected');
           setInitialized(true);
         }
-      } catch (err) {
+      } catch (err: any) {
+        console.error('Failed to connect wallet:', err);
         setError('Failed to connect wallet');
         setInitialized(true);
       }
@@ -53,22 +54,41 @@ const EvmWalletConnect = () => {
         setError('MetaMask not detected');
       }
     } catch (err: any) {
+      console.error('Error during wallet connection:', err);
       if (err.code === 4001) {
         setError('User rejected the connection request');
       } else {
-        setError('Failed to connect wallet');
+        setError(`Failed to connect wallet: ${err.message}`);
       }
+    }
+  };
+
+  const disconnectWallet = () => {
+    setAccount(null);
+    setError(null);
+  };
+
+  const forceConnectWallet = () => {
+    if (window.ethereum && window.ethereum.isMetaMask) {
+      connectWallet();
+    } else {
+      setError('MetaMask not detected');
     }
   };
 
   return (
     <div>
       {account ? (
-        <div className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
-          <p>Connected account: {account}</p>
+        <div>
+          <div className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
+            <p>Connected account: {account}</p>
+          </div>
+          <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={disconnectWallet}>
+            Disconnect Wallet
+          </button>
         </div>
       ) : (
-        <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={connectWallet}>
+        <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={forceConnectWallet}>
           Connect Wallet
         </button>
       )}

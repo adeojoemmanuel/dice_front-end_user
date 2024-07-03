@@ -2,14 +2,19 @@ import React from "react";
 import { isMobile } from "react-device-detect";
 import "./style.css";
 
-export default function BettingInput(props: {
+interface BettingInputProps {
   betAmount: string | number | readonly string[] | undefined;
   clearBetAmount: React.MouseEventHandler<HTMLButtonElement> | undefined;
   increaseAmount: (arg0: number) => void;
   divideAmount: () => void;
   multiAmount: () => void;
   maxAmount: () => void;
-}) {
+  betGreen: () => void;
+  betBlue: () => void;
+  betSame: () => void;
+}
+
+export default function BettingInput(props: BettingInputProps) {
   return (
     <>
       {isMobile ? (
@@ -74,6 +79,30 @@ export default function BettingInput(props: {
               data-animation-delay="1.1s"
             >
               MAX
+            </button>
+            <button
+              onClick={props.betGreen}
+              className="btn btn-gradient-purple btn-glow animated fadeInUpShorter px-0 col-2"
+              data-animation="fadeInUpShorter"
+              data-animation-delay="1.1s"
+            >
+              Bet Green
+            </button>
+            <button
+              onClick={props.betBlue}
+              className="btn btn-gradient-purple btn-glow animated fadeInUpShorter px-0 col-2"
+              data-animation="fadeInUpShorter"
+              data-animation-delay="1.1s"
+            >
+              Bet Blue
+            </button>
+            <button
+              onClick={props.betSame}
+              className="btn btn-gradient-purple btn-glow animated fadeInUpShorter px-0 col-2"
+              data-animation="fadeInUpShorter"
+              data-animation-delay="1.1s"
+            >
+              Bet Same
             </button>
           </div>
         </div>
@@ -171,6 +200,30 @@ export default function BettingInput(props: {
               data-animation-delay="1.1s"
             >
               MAX
+            </button>
+            <button
+              onClick={props.betGreen}
+              className="btn btn-gradient-purple btn-glow animated fadeInUpShorter px-0 col-2"
+              data-animation="fadeInUpShorter"
+              data-animation-delay="1.1s"
+            >
+              Bet Green
+            </button>
+            <button
+              onClick={props.betBlue}
+              className="btn btn-gradient-purple btn-glow animated fadeInUpShorter px-0 col-2"
+              data-animation="fadeInUpShorter"
+              data-animation-delay="1.1s"
+            >
+              Bet Blue
+            </button>
+            <button
+              onClick={props.betSame}
+              className="btn btn-gradient-purple btn-glow animated fadeInUpShorter px-0 col-2"
+              data-animation="fadeInUpShorter"
+              data-animation-delay="1.1s"
+            >
+              Bet Same
             </button>
           </div>
         </div>
