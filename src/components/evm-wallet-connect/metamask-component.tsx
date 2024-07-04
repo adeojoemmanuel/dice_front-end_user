@@ -2,29 +2,29 @@ import React, { useState, useEffect } from 'react';
 import detectEthereumProvider from '@metamask/detect-provider';
 
 const MetaMaskWalletButton = () => {
-    const [account, setAccount] = useState(null);
+    const [account, setAccount] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const connectWallet = async () => {
+    async function connectWallet() {
         try {
-            const provider:any = await detectEthereumProvider();
+            const provider: any = await detectEthereumProvider();
             if (provider) {
-                const accounts = await provider.request({ method: 'eth_requestAccounts' });
-                setAccount(accounts[0]);
-                console.log('Connected account:', accounts[0]);
+                await provider.request({ method: 'eth_requestAccounts' });
+                console.log('Ethereum provider detected and accounts accessed.');
             } else {
-                alert('MetaMask not detected. Please install MetaMask to use this feature.');
+                setError('Please install MetaMask!');
+                console.error('Please install MetaMask!');
             }
         } catch (error: any) {
             if (error.code === 4001) {
-                console.log('User rejected the request.');
-                alert('Wallet connection was rejected. Please try again and accept the request.');
+                setError('User rejected the request.');
+                console.error('User rejected the request.');
             } else {
-                console.error('An unexpected error occurred:', error);
-                alert('An unexpected error occurred. Please try again later.');
+                setError('An error occurred. Check console for details.');
+                console.error('An error occurred:', error);
             }
         }
-    };
+    }
 
     const disconnectWallet = () => {
         setAccount(null);
@@ -32,16 +32,15 @@ const MetaMaskWalletButton = () => {
     };
 
     const forceConnectWallet = () => {
-    if (window.ethereum && window.ethereum.isMetaMask) {
-        connectWallet();
-    } else {
-        setError('MetaMask not detected');
-    }
+        if (window.ethereum && window.ethereum.isMetaMask) {
+            connectWallet();
+        } else {
+            setError('MetaMask not detected');
+        }
     };
-    
 
     useEffect(() => {
-        const handleAccountsChanged = (accounts: any) => {
+        const handleAccountsChanged = (accounts: string[]) => {
             if (accounts.length > 0) {
                 setAccount(accounts[0]);
                 console.log('Account changed:', accounts[0]);
@@ -62,16 +61,14 @@ const MetaMaskWalletButton = () => {
         <div>
             {account ? (
                 <div>
-                <div className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
                     <p>Connected account: {account}</p>
-                </div>
-                <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={disconnectWallet}>
-                    Disconnect Wallet
-                </button>
+                    <button onClick={disconnectWallet}>
+                        Disconnect Wallet
+                    </button>
                 </div>
             ) : (
-                <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={forceConnectWallet}>
-                Connect Wallet MetaMaskPlugin
+                <button onClick={forceConnectWallet}>
+                    Connect Wallet
                 </button>
             )}
             {error && <p>{error}</p>}

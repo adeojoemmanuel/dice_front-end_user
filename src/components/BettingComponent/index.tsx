@@ -276,7 +276,7 @@ const BettingComponent = () => {
                 Deposit
               </a>
             </div>
-            {/* <EvmWalletConnect /> */}
+            <EvmWalletConnect />
             <MetaMaskWalletButton />
           </div>
         </div>

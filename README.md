@@ -1,5 +1,11 @@
 # Getting Started with Create React App
 
+
+
+```
+can you create a connect wallet button component  using ether.js, on react , it should consider the following parameter, - if a user doesn't have any evm supported web extension ,it  should return a text saying that  - if a user have an extension, and the button is clicked it should trigger open any evm supported wallet wallet
+
+```
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available OS

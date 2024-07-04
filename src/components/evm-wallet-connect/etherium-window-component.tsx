@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
 
 declare global {
   interface Window {
@@ -43,18 +45,17 @@ const EvmWalletConnect = () => {
     }
   }, [initialized]);
 
- 
-
   const connectWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
       try {
         const accounts: any = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        console.log(accounts);
+        const provider = new Web3Provider(window.ethereum);
+
+        console.log('provider loggg', provider);
+        console.log('account data log', accounts);
       } catch (error: any) {
         if (error.code === 4001) {
-          // EIP-1193 userRejectedRequest error
           console.log('User rejected the request.');
-          // Show a user-friendly message in the UI
           alert('Please connect to the wallet to proceed.');
         } else {
           console.error(error);
@@ -64,7 +65,7 @@ const EvmWalletConnect = () => {
       alert('MetaMask is not installed. Please install it to proceed.');
     }
   };
-  
+
   const disconnectWallet = () => {
     setAccount(null);
     setError(null);
@@ -78,7 +79,7 @@ const EvmWalletConnect = () => {
     }
   };
 
-  return (  
+  return (
     <div>
       {account ? (
         <div>

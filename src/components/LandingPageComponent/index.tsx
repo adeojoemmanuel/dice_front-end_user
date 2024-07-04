@@ -10,6 +10,7 @@ import DepositComponent from "../DepositComponent";
 import usePersonalInfo from "../../hooks/usePersonalInfo";
 
 import "./style.css";
+import MetaMaskWalletButton from "../evm-wallet-connect/metamask-component";
 
 const LandingPageComponent = () => {
   const curSocket = useSocket();
@@ -199,10 +200,10 @@ const LandingPageComponent = () => {
         </main>
       ) : tapFlag === 2 ? (
         <DepositComponent />
-        
       ) : (
         <WithdrawComponent />
       )}
+      <MetaMaskWalletButton />
     </>
   );
 };
