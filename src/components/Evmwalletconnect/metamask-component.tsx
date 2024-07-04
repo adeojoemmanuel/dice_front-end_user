@@ -61,14 +61,16 @@ const MetaMaskWalletButton = () => {
         <div>
             {account ? (
                 <div>
-                    <p>Connected account: {account}</p>
-                    <button onClick={disconnectWallet}>
+                    <div className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
+                        <p>Connected account: {account}</p>
+                    </div>
+                    <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={disconnectWallet}>
                         Disconnect Wallet
                     </button>
                 </div>
             ) : (
-                <button onClick={forceConnectWallet}>
-                    Connect Wallet
+                <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={forceConnectWallet}>
+                    Connect Wallet using EVM window
                 </button>
             )}
             {error && <p>{error}</p>}
