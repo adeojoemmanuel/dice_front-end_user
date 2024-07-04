@@ -10,7 +10,7 @@ import DepositComponent from "../DepositComponent";
 import usePersonalInfo from "../../hooks/usePersonalInfo";
 
 import "./style.css";
-import MetaMaskWalletButton from "../evm-wallet-connect/metamask-component";
+import MetaMaskWalletButton from "../Evmwalletconnect/metamask-component";
 
 const LandingPageComponent = () => {
   const curSocket = useSocket();

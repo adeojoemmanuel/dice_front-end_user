@@ -6,8 +6,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import usePersonalInfo from "../../hooks/usePersonalInfo";
 import Rolling from "../Rolling";
 import BettingInput from "../BettingInput";
-import EvmWalletConnect from "../evm-wallet-connect/etherium-window-component";
-import MetaMaskWalletButton from './../evm-wallet-connect/etherium-window-component'
+import { MetaMaskWalletButton, EvmWalletConnect} from '../Evmwalletconnect'
 import "./style.css";
 
 const BettingComponent = () => {
@@ -265,7 +264,7 @@ const BettingComponent = () => {
               <br />
               Select the center option if you think they will land on the same
               number for a chance to 5x your bet.
-            </h1>
+            </h1> 
             <div className="mt-5">
               <a
                 href="/deposit"
