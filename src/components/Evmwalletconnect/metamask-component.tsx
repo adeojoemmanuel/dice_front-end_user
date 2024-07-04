@@ -4,12 +4,15 @@ import detectEthereumProvider from '@metamask/detect-provider';
 const MetaMaskWalletButton = () => {
     const [account, setAccount] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     async function connectWallet() {
         try {
+            setLoading(true);
             const provider: any = await detectEthereumProvider();
             if (provider) {
-                await provider.request({ method: 'eth_requestAccounts' });
+                const accounts = await provider.request({ method: 'eth_requestAccounts' });
+                setAccount(accounts[0]);
                 console.log('Ethereum provider detected and accounts accessed.');
             } else {
                 setError('Please install MetaMask!');
@@ -23,6 +26,8 @@ const MetaMaskWalletButton = () => {
                 setError('An error occurred. Check console for details.');
                 console.error('An error occurred:', error);
             }
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -50,6 +55,18 @@ const MetaMaskWalletButton = () => {
             }
         };
 
+        const checkInitialConnection = async () => {
+            const provider: any = await detectEthereumProvider();
+            if (provider) {
+                const accounts = await provider.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) {
+                    setAccount(accounts[0]);
+                }
+            }
+        };
+
+        checkInitialConnection();
+
         window.ethereum?.on('accountsChanged', handleAccountsChanged);
 
         return () => {
@@ -69,8 +86,12 @@ const MetaMaskWalletButton = () => {
                     </button>
                 </div>
             ) : (
-                <button className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated" onClick={forceConnectWallet}>
-                    Connect Wallet using EVM window
+                <button
+                    className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated"
+                    onClick={forceConnectWallet}
+                    disabled={loading}
+                >
+                    {loading ? 'Connecting...' : 'Connect Wallet using Metamask plugin'}
                 </button>
             )}
             {error && <p>{error}</p>}
