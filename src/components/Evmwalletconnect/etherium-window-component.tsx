@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import detectEthereumProvider from '@metamask/detect-provider';
 
 const EvmWalletConnect = () => {
     const [account, setAccount] = useState<string | null>(null);
@@ -9,21 +8,19 @@ const EvmWalletConnect = () => {
     async function connectWallet() {
         try {
             setLoading(true);
-            let  provider: any;
             if (window.ethereum) {
-                provider = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                console.log('Wallet connected');
-              } else {
-                console.log('No wallet found');
-              }
-            if (provider) {
-                const accounts = await provider.request({ method: 'eth_requestAccounts' });
-                setAccount(accounts[0]);
-                setError(null);  // Clear any previous errors
-                console.log('Ethereum provider detected and accounts accessed.');
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                if (accounts.length > 0) {
+                    setAccount(accounts[0]);
+                    setError(null);
+                    console.log('Connected account:', accounts[0]);
+                } else {
+                    setError('No accounts found');
+                    console.error('No accounts found');
+                }
             } else {
                 setError('Please install MetaMask!');
-                console.error('Please install MetaMask!');
+                console.error('Ethereum provider not found. Please install MetaMask.');
             }
         } catch (error: any) {
             if (error.code === 4001) {
@@ -52,14 +49,13 @@ const EvmWalletConnect = () => {
     };
 
     const checkInitialConnection = async () => {
-        const provider: any = await detectEthereumProvider();
-        if (provider) {
-            const accounts = await provider.request({ method: 'eth_accounts' });
+        if (window.ethereum) {
+            const accounts = await window.ethereum.request({ method: 'eth_accounts' });
             if (accounts.length > 0) {
                 setAccount(accounts[0]);
             }
         }
-    };    
+    };
 
     useEffect(() => {
         const handleAccountsChanged = (accounts: string[]) => {
@@ -74,10 +70,14 @@ const EvmWalletConnect = () => {
 
         checkInitialConnection();
 
-        window.ethereum?.on('accountsChanged', handleAccountsChanged);
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', handleAccountsChanged);
+        }
 
         return () => {
-            window.ethereum?.removeListener('accountsChanged', handleAccountsChanged);
+            if (window.ethereum) {
+                window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+            }
         };
     }, []);
 
@@ -98,7 +98,7 @@ const EvmWalletConnect = () => {
                     onClick={forceConnectWallet}
                     disabled={loading}
                 >
-                    {loading ? 'Connecting...' : 'Connect Using Windows Etherium'}
+                    {loading ? 'Connecting...' : 'Connect Using Browser Ethereum Window'}
                 </button>
             )}
             {error && <p>{error}</p>}

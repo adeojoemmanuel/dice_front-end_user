@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import detectEthereumProvider from '@metamask/detect-provider';
 
-const MetaMaskWalletButton = () => {
+const MetaMaskConnect = () => {
     const [account, setAccount] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -99,4 +99,4 @@ const MetaMaskWalletButton = () => {
     );
 };
 
-export default MetaMaskWalletButton;
+export default MetaMaskConnect;

@@ -1,4 +1,4 @@
 import EvmWalletConnect from './etherium-window-component';
-import MetaMaskWalletButton from './metamask-component';
+import MetaMaskConnect from './metamask-component';
 
-export { EvmWalletConnect, MetaMaskWalletButton };
+export { EvmWalletConnect, MetaMaskConnect };
