@@ -28,7 +28,6 @@ const LandingPageComponent = () => {
     audioTune.play();
   };
 
-  // pause audio sound
   const pauseSound = () => {
     audioTune.pause();
   };
@@ -56,20 +55,13 @@ const LandingPageComponent = () => {
   }, []);
 
   const particlesInit = async (main: Engine) => {
-    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
     await loadFull(main);
   };
-
-  // const particlesLoaded = (container: any) => {
-  //   console.log(container);
-  // };
 
   return (
     <>
       {tapFlag === 1 ? (
-        <main>
+        <><main>
           <section
             className="head-area-content team section-padding"
             id="head-area"
@@ -77,7 +69,6 @@ const LandingPageComponent = () => {
             <Particles
               id="tsparticles"
               init={particlesInit}
-              // loaded={particlesLoaded}
               options={{
                 fpsLimit: 120,
                 interactivity: {
@@ -191,16 +182,15 @@ const LandingPageComponent = () => {
                   hide_card: false,
                 },
                 detectRetina: true,
-              }}
-            />
+              }} />
             <BettingComponent />
             <BettingStatus />
           </section>
-          <EvmWalletConnect />
         </main>
+        <EvmWalletConnect />
+        </>
       ) : tapFlag === 2 ? (
         <DepositComponent />
-        
       ) : (
         <WithdrawComponent />
       )}
