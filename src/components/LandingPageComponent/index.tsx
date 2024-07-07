@@ -8,7 +8,7 @@ import useSocket from "../../hooks/useSocket";
 import WithdrawComponent from "../WithdrawComponent";
 import DepositComponent from "../DepositComponent";
 import usePersonalInfo from "../../hooks/usePersonalInfo";
-import EvmWalletConnect from './../evm-wallet-connect/connect-wallet';
+import { EvmWalletConnect} from './../Evmwalletconnect'
 import "./style.css";
 
 const LandingPageComponent = () => {

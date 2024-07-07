@@ -11,7 +11,7 @@ import {
 } from "@solana-mobile/wallet-adapter-mobile";
 import { clusterApiUrl } from "@solana/web3.js";
 import "@solana/wallet-adapter-react-ui/styles.css";
-import { SocketContextProvider } from "./../src/contexts/SocketContext";
+import { SocketContextProvider } from "./contexts/SocketContext";
 import {
   PhantomWalletAdapter,
   GlowWalletAdapter,
@@ -19,11 +19,10 @@ import {
   SolflareWalletAdapter,
   SolletWalletAdapter,
   SolletExtensionWalletAdapter,
-  TorusWalletAdapter
+  TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
-import {  EvmWalletConnect, MetaMaskConnect, EvmWeb3Auth } from './components/Evmwalletconnect';
+import { EvmWalletConnect, MetaMaskConnect, EvmWeb3Auth } from "./components/Evmwalletconnect";
 import React from "react";
-
 
 interface SolanaConnectProps {
   children: ReactNode;
@@ -37,12 +36,17 @@ function SolanaConnect({ children }: SolanaConnectProps) {
       new SolanaMobileWalletAdapter({
         appIdentity: { name: "Solana Wallet Adapter App" },
         authorizationResultCache: createDefaultAuthorizationResultCache(),
+        cluster: network,
       }),
       new PhantomWalletAdapter(),
       new GlowWalletAdapter(),
       new SlopeWalletAdapter(),
+      new SolflareWalletAdapter({ network }),
+      new SolletWalletAdapter({ network }),
+      new SolletExtensionWalletAdapter({ network }),
+      new TorusWalletAdapter(),
     ],
-    []
+    [network]
   );
 
   return (
@@ -56,4 +60,4 @@ function SolanaConnect({ children }: SolanaConnectProps) {
   );
 }
 
-export { SolanaConnect, EvmWeb3Auth, MetaMaskConnect };
+export { SolanaConnect, EvmWalletConnect, MetaMaskConnect, EvmWeb3Auth };
