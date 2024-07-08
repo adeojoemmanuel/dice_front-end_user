@@ -1,6 +1,7 @@
 import React from "react";
-import { SolanaConnect, EvmWalletConnect, MetaMaskConnect } from "./provider";
+import { SolanaConnect } from "./provider";
 import AppContent from './AppContent';
+import { EvmWalletConnect, MetaMaskConnect, EvmWeb3Auth } from './components/Evmwalletconnect';
 
 function App() {
   return (
@@ -8,12 +9,9 @@ function App() {
       <SolanaConnect>
         <AppContent />
       </SolanaConnect>
-      <>
-        <EvmWalletConnect />
-      </>
-      <>
-        <MetaMaskConnect />
-      </>
+      <EvmWalletConnect />
+      <MetaMaskConnect />
+      <EvmWeb3Auth />
     </div>
   );
 }

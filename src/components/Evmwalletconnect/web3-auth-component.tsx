@@ -43,8 +43,8 @@ const EvmWeb3Auth = () => {
   
 
   return (
-    <button onClick={connectWallet} disabled={!web3auth}>
-      {provider ? 'Wallet Connected' : 'Connect Wallet'}
+    <button onClick={connectWallet} disabled={!web3auth} className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
+      {provider ? 'Wallet Connected' : 'Connect With Web3Auth'}
     </button>
   );
 };

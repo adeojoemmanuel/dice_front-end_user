@@ -28,12 +28,15 @@ const EvmWalletConnect = () => {
                 console.error('User rejected the request.');
             } else {
                 setError('An error occurred. Check console for details.');
-                console.error('An error occurred:', error);
+                console.error('An error occurred:', error.message);
+                console.error('Error code:', error.code);
+                console.error('Stack trace:', error.stack);
             }
         } finally {
             setLoading(false);
         }
     }
+    
 
     const disconnectWallet = () => {
         setAccount(null);
