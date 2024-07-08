@@ -10,23 +10,25 @@ const EvmWeb3Auth = () => {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
-    const initWeb3Auth = async () => {
-      try {
-        const web3authInstance = new Web3Auth({
-          clientId,
-          chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: '0x1' },
-        });
-        await web3authInstance.initModal(); 
-        setWeb3auth(web3authInstance);
-      } catch (error) {
-        console.error('Failed to initialize Web3Auth', error);
-      }
-    };
-
-    initWeb3Auth();
+    console.log('web3 auth component');
   }, []);
 
+  const initWeb3Auth = async () => {
+    try {
+      const web3authInstance = new Web3Auth({
+        clientId,
+        chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: '0x1' },
+      });
+      await web3authInstance.initModal(); 
+      setWeb3auth(web3authInstance);
+    } catch (error) {
+      console.error('Failed to initialize Web3Auth', error);
+    }
+  };
+
+
   const connectWallet = async () => {
+    await initWeb3Auth();
     if (!web3auth) {
       console.error('Web3Auth not initialized');
       return;

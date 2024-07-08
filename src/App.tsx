@@ -6,11 +6,13 @@ import { EvmWalletConnect, MetaMaskConnect, EvmWeb3Auth } from './components/Evm
 function App() {
   return (
     <div>
-      <SolanaConnect>
-        <AppContent />
-      </SolanaConnect>
-      <EvmWalletConnect />
-      <MetaMaskConnect />
+      <React.StrictMode>
+        <SolanaConnect>
+          <AppContent />
+        </SolanaConnect>
+        <EvmWalletConnect />
+        <MetaMaskConnect />
+      </React.StrictMode>
       <EvmWeb3Auth />
     </div>
   );
