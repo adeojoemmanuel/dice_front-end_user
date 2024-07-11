@@ -14,7 +14,6 @@ import {
   SolflareWalletAdapter,
   TorusWalletAdapter,
   CoinbaseWalletAdapter,
-  TrustWalletAdapter,
   PhantomWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
@@ -22,7 +21,7 @@ import ConnectWalletTaskBox from './component/multi-chain-wallet-adapters/connec
 import WrongWalletTaskBox from './component/multi-chain-wallet-adapters/wrong-wallet-state';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { WalletConnectProps, UserWalletItem } from './types/wallet-types';
-import { CustomWalletAdapter } from './custom-wallet-adapter/custom-phantom-wallet-adapter';
+import { CustomPhantomAdapter }  from './adapter/custom-phantom-adapter';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
@@ -126,9 +125,8 @@ const BlockchainWalletAdapter: React.FC<WalletConnectProps> = ({
       new SolflareWalletAdapter(),
       new TorusWalletAdapter(),
       new CoinbaseWalletAdapter(),
-      new TrustWalletAdapter(),
       new PhantomWalletAdapter(),
-      new CustomWalletAdapter(),
+      new CustomPhantomAdapter(),
     ],
     []
   );

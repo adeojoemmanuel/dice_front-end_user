@@ -21,7 +21,8 @@ import {
   SolletExtensionWalletAdapter,
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
-import { EvmWalletConnect, MetaMaskConnect, EvmWeb3Auth } from "./components/Evmwalletconnect";
+import { browserWindowConnect, CustomPhantomAdapter, EvmWalletConnect, MetaWMaskWalletConnect, Web3AuthConnect } from './lib/block-chain-adapter-ng/src/adapter'
+
 import React from "react";
 
 interface SolanaConnectProps {
@@ -61,4 +62,4 @@ function SolanaConnect({ children }: SolanaConnectProps) {
 }
 
 
-export { SolanaConnect, EvmWalletConnect, MetaMaskConnect, EvmWeb3Auth };
+export { SolanaConnect, EvmWalletConnect, MetaWMaskWalletConnect, Web3AuthConnect, CustomPhantomAdapter, browserWindowConnect };

@@ -11,12 +11,12 @@ const mockSocket = {
   on: (event: string, callback: Function) => {
     if (event === "someEvent") {
       callback({ mockData: "Hello from mock!" });
-      console.debug({event, callback});
+      console.debug({ event, callback });
     }
-    console.debug({event,callback});
+    console.debug({ event, callback });
   },
   emit: (event: string, data: any) => {
-    console.debug({event, data})
+    console.debug({ event, data });
   },
 };
 
