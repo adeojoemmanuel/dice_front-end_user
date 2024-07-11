@@ -1,0 +1,72 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 23px;
+  user-select: none;
+}
+
+.complete {
+  justify-content: right;
+  padding: 0 9px;
+  width: 72px;
+  height: 23px;
+  background-color: var(--clrGreen);
+  box-shadow: 0;
+}
+
+.incomplete {
+  justify-content: space-between;
+  padding: 0 8px;
+  width: 49px;
+  height: 23px;
+  background-color: var(--clrPink);
+  box-shadow: 0px 0px 15px var(--clrPink);
+}
+
+.container .finger {
+  width: 9px;
+  height: 15px;
+  margin-left: 2px;
+}
+
+.container .check {
+  width: 11px;
+  height: 9px;
+}
+
+.container.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.inner {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 23px;
+  padding: 0 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 49px;
+  height: 23px;
+  background-color: var(--clrGreyMed);
+  transform: translateX(-1px);
+}
+
+.points {
+  color: var(--clrWhite);
+  font-weight: 700;
+  font-size: 14px;
+  padding-left: 6px;
+}
+
+.complete {
+  background-color: var(--clrGreen);
+}

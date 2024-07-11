@@ -1,14 +1,50 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useCallback } from "react";
 
-const EvmWalletConnect = () => {
+// Define wallet names and their detection status
+const WALLETS = [
+  { name: "MetaMask", condition: () => window.ethereum && window.ethereum.isMetaMask },
+  { name: "Coinbase Wallet", condition: () => window.ethereum && window.ethereum.isCoinbaseWallet },
+  { name: "Brave Wallet", condition: () => window.ethereum && window.ethereum.isBraveWallet },
+  { name: "Phantom", condition: () => window.ethereum && window.ethereum.isPhantom },
+  { name: "Trust Wallet", condition: () => window.ethereum && window.ethereum.isTrust },
+  { name: "MathWallet", condition: () => window.ethereum && window.ethereum.isMathWallet },
+  { name: "Binance Chain Wallet", condition: () => window.BinanceChain },
+  { name: "Frame", condition: () => window.ethereum && window.ethereum.isFrame },
+];
+
+const EvmWalletConnect: React.FC = () => {
   const [account, setAccount] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [availableWallets, setAvailableWallets] = useState<string[]>([]);
+  const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
 
-  const connectWallet = async () => {
+  useEffect(() => {
+    const detectWallets = () => {
+      const detectedWallets = WALLETS.filter(wallet => wallet.condition()).map(wallet => wallet.name);
+      setAvailableWallets(detectedWallets);
+      console.log(detectedWallets);
+    };
+
+    detectWallets();
+  }, []);
+
+  const connectWallet = useCallback(async () => {
     try {
       setLoading(true);
-      if (window.ethereum && window.ethereum.isMetaMask) {
+      if (selectedWallet === "Phantom" && window.ethereum && window.ethereum.isPhantom) {
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        const accounts = await window.ethereum.request({ method: "eth_accounts" });
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          setError(null);
+          console.log("Connected account:", accounts[0]);
+        } else {
+          setError("No accounts found");
+          console.error("No accounts found");
+        }
+      } else if (window.ethereum) {
         const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
         if (accounts.length > 0) {
           setAccount(accounts[0]);
@@ -19,8 +55,8 @@ const EvmWalletConnect = () => {
           console.error("No accounts found");
         }
       } else {
-        setError("Please install MetaMask!");
-        console.error("Ethereum provider not found. Please install MetaMask.");
+        setError("Ethereum provider not found. Please install a wallet extension.");
+        console.error("Ethereum provider not found.");
       }
     } catch (error: any) {
       if (error.code === 4001) {
@@ -35,20 +71,22 @@ const EvmWalletConnect = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedWallet]);
 
   const disconnectWallet = () => {
     setAccount(null);
     setError(null);
   };
 
-  const forceConnectWallet = () => {
-    if (window.ethereum && window.ethereum.isMetaMask) {
-      connectWallet();
-    } else {
-      setError("MetaMask not detected");
-    }
+  const handleWalletSelection = (walletName: string) => {
+    setSelectedWallet(walletName);
   };
+
+  useEffect(() => {
+    if (selectedWallet) {
+      connectWallet();
+    }
+  }, [connectWallet, selectedWallet]);
 
   useEffect(() => {
     const handleAccountsChanged = (accounts: string[]) => {
@@ -57,16 +95,16 @@ const EvmWalletConnect = () => {
         console.log("Account changed:", accounts[0]);
       } else {
         setAccount(null);
-        console.log("Please connect to MetaMask.");
+        console.log("Please connect to a wallet.");
       }
     };
 
-    if (window.ethereum && window.ethereum.isMetaMask) {
+    if (window.ethereum) {
       window.ethereum.on("accountsChanged", handleAccountsChanged);
     }
 
     return () => {
-      if (window.ethereum && window.ethereum.isMetaMask) {
+      if (window.ethereum) {
         window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
       }
     };
@@ -83,16 +121,26 @@ const EvmWalletConnect = () => {
             Disconnect Wallet
           </button>
         </div>
-      ) : (
-        <button
-          className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated"
-          onClick={forceConnectWallet}
-          disabled={loading}
-        >
-          {loading ? "Connecting..." : "Connect Using MetaMask"}
-        </button>
+      ) : ( 
+        <div>
+          <p>Select a wallet to connect:</p>
+          {availableWallets.length > 0 ? (
+            availableWallets.map(wallet => (
+              <button
+                key={wallet}
+                className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated"
+                onClick={() => handleWalletSelection(wallet)}
+                disabled={loading}
+              >
+                {loading ? `Connecting to ${wallet}...` : `Connect with ${wallet}`}
+              </button>
+            ))
+          ) : (
+            <p>No supported wallets detected. Please install MetaMask, Phantom, or another wallet extension.</p>
+          )}
+          {error && <p>{error}</p>}
+        </div>
       )}
-      {error && <p>{error}</p>}
     </div>
   );
 };

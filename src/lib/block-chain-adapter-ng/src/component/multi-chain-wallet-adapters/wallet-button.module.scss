@@ -1,0 +1,228 @@
+.addWalletAddressFooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    position: relative;
+    top: 9px;
+  }
+  
+  .walletTaskBox {
+  // style pill
+    & > div:nth-child(3) {
+      & > div:nth-child(2) {
+        position: absolute;
+        height: 0px;
+        top: 20px;
+        right: 20px;
+      }
+    }
+   
+  }
+  
+  .customButtonWrapper {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  
+  .customButtonWrapper div button {
+    padding: 0;
+    text-align: left;
+  
+    @media (max-width: 900px) {
+      line-height: 1em;
+    }
+  }
+  
+  .connectWalletText {
+    position: relative;
+    top: -17px;
+  }
+  
+  .walletAddressContainer {
+    width: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #deff0a;
+    cursor: pointer;
+    height: 52px;
+    padding-top: 20px;
+    box-sizing: border-box;
+    line-height: 1rem;
+    margin-right: 14em;
+  }
+  
+  .addWalletAddressContainer {
+    width: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    color: #deff0a;
+    cursor: pointer;
+    height: 52px;
+    padding-top: 35px;
+    box-sizing: border-box;
+    line-height: 1rem;
+  }
+  
+  .walletAddress {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .copyIcon {
+    margin-left: 2px;
+  }
+  
+  .endIcon {
+    margin-left: auto;
+  }
+  
+  // Variables
+  $modal-overlay-bg: rgba(0, 0, 0, 0.5);
+  $modal-content-bg: white;
+  $modal-border-radius: 8px;
+  $modal-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+  // Mixins
+  @mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  // Modal Styles
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $modal-overlay-bg;
+    @include flex-center;
+  }
+  
+  .walletMultiButton {
+    display: none;
+  }
+  
+  .modal-content {
+    background: $modal-content-bg;
+    padding: 20px;
+    border-radius: $modal-border-radius;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: $modal-box-shadow;
+  
+    h2 {
+      margin-top: 0;
+    }
+  
+    button {
+      margin-top: 20px;
+    }
+  }
+  
+  // get started custom modal style
+  .custom-modal-class {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1000;
+  }
+  
+  .custom-overlay-class {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1000;
+  }
+  
+  // Variables
+  $modal-overlay-bg: rgba(0, 0, 0, 0.5);
+  $modal-content-bg: white;
+  $modal-border-radius: 8px;
+  $modal-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+  // Mixins
+  @mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .wallet-modal-top {
+    z-index: 999999 !important;
+  }
+  
+  // Scoped styles for modal content
+  .custom-modal-class {
+    .modal {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 600px;
+      position: relative;
+    }
+  
+    .close-btn {
+      color: #aaa;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+  
+    .close-btn:hover,
+    .close-btn:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  
+    ol {
+      padding-left: 20px;
+    }
+  
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  }

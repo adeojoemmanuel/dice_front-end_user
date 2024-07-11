@@ -1,0 +1,173 @@
+.container {
+  background-color: #282828;
+  box-shadow: inset 0 0 7px #fff4;
+  border: 0;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--clrWhite);
+  font-size: 20px;
+  font-weight: 700;
+  box-sizing: border-box;
+  margin: 10px 0;
+  width: 100%;
+  padding: 16px;
+}
+
+.simple {
+  min-height: 3em;
+}
+
+.baseBox {
+  margin: 14px 0;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 4px;
+}
+
+.baseBoxSocial {
+  margin: 14px 0;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 4px;
+  background-color: black;
+}
+
+.simpleNoBox {
+  @extend .baseBox;
+  cursor: default;
+
+  pointer-events: none;
+  @media (min-width: 600px) {
+    margin: 8px 0;
+  }
+}
+
+.simpleNoBoxSocial {
+  @extend .baseBoxSocial;
+  cursor: default;
+
+  pointer-events: none;
+  @media (min-width: 600px) {
+    margin: 8px 0;
+  }
+}
+
+.simpleNoBoxInteractive {
+  @extend .baseBox;
+
+  padding: 8px;
+  pointer-events: all;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--clrGreyDk);
+  }
+}
+
+.simpleNoBoxSocialInteractive {
+  @extend .baseBoxSocial;
+  cursor: default;
+}
+
+.headerLarge {
+  min-height: 1em;
+  flex-direction: column;
+  align-items: normal;
+  position: relative;
+}
+
+.headerSmall {
+  min-height: 3em;
+  width: 48%;
+  padding: 0;
+  flex-direction: column;
+  position: relative;
+}
+
+.header {
+  margin: 0;
+  padding: 0;
+  line-height: 2.5em;
+  display: flex;
+  align-items: center;
+  mix-blend-mode: lighten;
+}
+
+.headerSm {
+  width: 100%;
+  height: 2.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.footer {
+  @extend .header;
+}
+.footerLarge {
+  @extend .headerLarge;
+}
+
+.footerSmall {
+  @extend .headerSmall;
+}
+
+.footerSm {
+  @extend .headerSm;
+}
+
+.overlay {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: #0006;
+}
+
+.topOverlay {
+  @extend .overlay;
+  top: 0;
+  border-radius: 12px 12px 0 0;
+}
+
+.bottomOverlay {
+  @extend .overlay;
+  height: 64px;
+  bottom: 0;
+  border-radius: 0 0 12px 12px;
+}
+
+.tb {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 0 16px 0;
+}
+
+.lr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  // margin: 0 0 16px 0;
+}
+
+.lr div h1,
+.tb div h1 {
+  margin: 10px 0;
+}
+
+.l {
+  flex: 1 1 75%;
+}
+
+.r {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
