@@ -11,7 +11,7 @@ export default function Rolling() {
 
   useEffect(() => {
     if (curSocket) {
-      curSocket.emit("get_status");
+      curSocket?.emit("get_status");
       curSocket.on("message", async (...data: any) => {
         if (data[0].type === "betting_start") {
           setStartTime(1990);

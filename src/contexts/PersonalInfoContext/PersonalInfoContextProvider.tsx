@@ -254,7 +254,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
         );
 
         if (statusFlag == false && adminStatusFlag == true) {
-          curSocket.emit(
+          curSocket?.emit(
             "set_state",
             JSON.stringify({ wallet: wallet.adapter?.publicKey })
           );
@@ -404,7 +404,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           );
 
           if (statusFlag == false && adminStatusFlag == true) {
-            curSocket.emit(
+            curSocket?.emit(
               "set_state",
               JSON.stringify({ wallet: wallet.adapter?.publicKey })
             );
@@ -561,7 +561,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           );
 
           if (statusFlag == false && adminStatusFlag == true) {
-            curSocket.emit(
+            curSocket?.emit(
               "set_state",
               JSON.stringify({ wallet: publicKey })
             );
@@ -591,9 +591,9 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
   const updateFund = () => {
     if (
       (wallet?.adapter.publicKey?.toBase58() || publicKey?.toBase58()) &&
-      curSocket.connected
+      curSocket?.connected
     ) {
-      curSocket.emit(
+      curSocket?.emit(
         "get_fund",
         JSON.stringify({ wallet: wallet?.adapter.publicKey?.toBase58() })
       );
@@ -603,13 +603,13 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
   const getStatus = () => {
     if (
       (wallet?.adapter.publicKey?.toBase58() || publicKey?.toBase58()) &&
-      curSocket.connected
+      curSocket?.connected
     ) {
-      curSocket.emit(
+      curSocket?.emit(
         "get_state",
         JSON.stringify({ wallet: "admin" })
       );
-      curSocket.emit(
+      curSocket?.emit(
         "get_state",
         JSON.stringify({ wallet: wallet?.adapter.publicKey?.toBase58() })
       );
@@ -639,7 +639,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           stateData.status === "default" &&
           (await deposit(amount))
         ) {
-          curSocket.emit(
+          curSocket?.emit(
             "deposit_fund",
             JSON.stringify({
               wallet: wallet?.adapter.publicKey?.toBase58(),
@@ -657,7 +657,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
             progress: undefined,
             theme: "dark",
           });
-          curSocket.emit(
+          curSocket?.emit(
             "deposit_fund",
             JSON.stringify({
               wallet: wallet?.adapter.publicKey?.toBase58(),
@@ -708,14 +708,14 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
         if ((await conn.getAccountInfo(state)) !== null) {
           const stateData: any = await getStateData();
           if (stateData.amount === 0 && stateData.status === "default") {
-            curSocket.emit(
+            curSocket?.emit(
               "withdraw",
               JSON.stringify({
                 wallet: wallet?.adapter.publicKey?.toBase58(),
                 amount: Number(amount),
               })
             );
-            curSocket.on("message", async (...data: any) => {
+            curSocket?.on("message", async (...data: any) => {
               if (data[0].type === "withdraw") {
                 if (data[0].ok) {
                   await whithdraw(Number(amount));
@@ -855,11 +855,11 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
 
   useEffect(() => {
     if (wallet?.adapter.publicKey) {
-      curSocket.emit(
+      curSocket?.emit(
         "get_fund",
         JSON.stringify({ wallet: wallet?.adapter.publicKey?.toBase58() })
       );
-      curSocket.on("message", async (...data: any) => {
+      curSocket?.on("message", async (...data: any) => {
         if (
           data[0].type === "betting" &&
           wallet?.adapter.publicKey?.toBase58() === data[0].wallet

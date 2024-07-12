@@ -18,6 +18,8 @@ import {
   SupportedTransactionVersions,
 } from '@solana/wallet-adapter-base';
 import crypto from 'crypto';
+// import crypto from 'crypto-browserify';
+
 import { routes } from '../../types/routes';
 
 global.Buffer = global.Buffer || Buffer;

@@ -14,6 +14,16 @@ const BettingComponent = () => {
   const { publicKey } = useWallet();
   const [betAmount, setBetAmount] = useState("");
 
+  if (curSocket) {
+    curSocket?.emit(
+      "betting",
+      JSON.stringify({
+        wallet: publicKey?.toBase58(),
+      })
+    );
+  }
+
+  
   const clearBetAmount = () => {
     setBetAmount("");
   };
@@ -79,7 +89,7 @@ const BettingComponent = () => {
       });
     } else {
       if (bettingFlag && betColor === "") {
-        curSocket.emit(
+        curSocket?.emit(
           "betting",
           JSON.stringify({
             wallet: publicKey?.toBase58(),
@@ -142,7 +152,7 @@ const BettingComponent = () => {
       });
     } else {
       if (bettingFlag && betColor === "") {
-        curSocket.emit(
+        curSocket?.emit(
           "betting",
           JSON.stringify({
             wallet: publicKey?.toBase58(),
@@ -205,7 +215,7 @@ const BettingComponent = () => {
       });
     } else {
       if (bettingFlag && betColor === "") {
-        curSocket.emit(
+        curSocket?.emit(
           "betting",
           JSON.stringify({
             wallet: publicKey?.toBase58(),

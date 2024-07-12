@@ -21,7 +21,7 @@ import ConnectWalletTaskBox from './component/multi-chain-wallet-adapters/connec
 import WrongWalletTaskBox from './component/multi-chain-wallet-adapters/wrong-wallet-state';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { WalletConnectProps, UserWalletItem } from './types/wallet-types';
-import { CustomPhantomAdapter }  from './adapter/custom-phantom-adapter';
+import { CustomPhantomAdapter } from './adapter/custom-phantom-adapter';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
