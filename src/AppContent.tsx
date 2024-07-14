@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes as Switch,
-} from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { PersonalInfoContextProvider } from "./contexts/PersonalInfoContext";
-import PreloaderComponent from "./components/PreloaderComponent";
-import VerticalSocialComponent from "./components/VerticalSocialComponent";
-import HeaderComponent from "./components/HeaderComponent";
-import FooterComponent from "./components/FooterComponent";
-import LandingPage from "./pages/LandingPage";
-import DepositPage from "./pages/DepositPage";
-import WithdrawPage from "./pages/WithdrawPage";
+} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { PersonalInfoContextProvider } from './contexts/PersonalInfoContext';
+import PreloaderComponent from './components/PreloaderComponent';
+import VerticalSocialComponent from './components/VerticalSocialComponent';
+import HeaderComponent from './components/HeaderComponent';
+import FooterComponent from './components/FooterComponent';
+import LandingPage from './pages/LandingPage';
+import DepositPage from './pages/DepositPage';
+import WithdrawPage from './pages/WithdrawPage';
 
 const AppContent = () => (
   <PersonalInfoContextProvider>

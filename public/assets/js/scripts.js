@@ -1,4 +1,4 @@
-(function(window, undefined) {
+(function (window, undefined) {
   'use strict';
 
   /*
@@ -6,5 +6,4 @@
   ------
   PLACE HERE YOUR OWN JAVASCRIPT CODE IF NEEDED
   WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR JAVASCRIPT CODE PLEASE CONSIDER WRITING YOUR SCRIPT HERE.  */
-
 })(window);

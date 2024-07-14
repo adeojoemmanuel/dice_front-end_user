@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const CryptoVerticalSocialComponent = () => {
   return (
@@ -16,7 +16,7 @@ const CryptoVerticalSocialComponent = () => {
         </li>
         <li>
           <a href="https://twitter.com/">
-            {" "}
+            {' '}
             <i className="fa fa-twitter" aria-hidden="true"></i>
           </a>
         </li>

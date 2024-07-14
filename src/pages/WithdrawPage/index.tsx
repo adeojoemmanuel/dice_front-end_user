@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import WithdrawComponent from "../../components/WithdrawComponent";
+import WithdrawComponent from '../../components/WithdrawComponent';
 
 const WithdrawPage = () => {
   return <WithdrawComponent />;

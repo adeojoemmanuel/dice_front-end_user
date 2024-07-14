@@ -1,34 +1,34 @@
 (function (window, document, $) {
-  "use strict";
+  'use strict';
   /* Video Modal Open / Close */
 
   /* Gets the video src from the data-src on video button */
   var $videoSrc;
-  $(".video-btn").click(function () {
-    $videoSrc = $(this).data("src");
+  $('.video-btn').click(function () {
+    $videoSrc = $(this).data('src');
   });
 
   /* when the modal is opened autoplay it   */
-  $("#ico-modal").on("shown.bs.modal", function (e) {
+  $('#ico-modal').on('shown.bs.modal', function (e) {
     /* set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get */
-    $("#video").attr(
-      "src",
-      $videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1"
+    $('#video').attr(
+      'src',
+      $videoSrc + '?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1'
     );
   });
 
   /* stop playing the youtube video when I close the modal */
-  $("#ico-modal").on("hide.bs.modal", function (e) {
+  $('#ico-modal').on('hide.bs.modal', function (e) {
     /* a poor man's stop video */
-    $("#video").attr("src", $videoSrc);
+    $('#video').attr('src', $videoSrc);
   });
   /* Initialize Swiper */
-  var swiper = new Swiper(".swiper-container", {
+  var swiper = new Swiper('.swiper-container', {
     slidesPerView: 5,
     grabCursor: true,
     navigation: {
-      nextEl: ".next-slide",
-      prevEl: ".prev-slide",
+      nextEl: '.next-slide',
+      prevEl: '.prev-slide',
     },
     /* Responsive breakpoints */
     breakpoints: {

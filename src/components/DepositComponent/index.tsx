@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 // import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import usePersonalInfo from "../../hooks/usePersonalInfo";
-import useSocket from "../../hooks/useSocket";
-import "./style.css";
+import usePersonalInfo from '../../hooks/usePersonalInfo';
+import useSocket from '../../hooks/useSocket';
+import './style.css';
 
 const DepositComponent = () => {
   const curSocket = useSocket();
-  const { handleDepositSol, updateFund, getStatus, depositingFlag, setDepositingFlag } =
-    usePersonalInfo();
-  const [solAmount, setSolAmount] = useState<string>("");
+  const {
+    handleDepositSol,
+    updateFund,
+    getStatus,
+    depositingFlag,
+    setDepositingFlag,
+  } = usePersonalInfo();
+  const [solAmount, setSolAmount] = useState<string>('');
   const [recvAmount, setRecvAmount] = useState<number>(0);
   const [depositFlag, setDepositFlag] = useState<boolean>(true);
   const rate = 100;
@@ -19,48 +24,48 @@ const DepositComponent = () => {
       setDepositFlag(true);
       setDepositingFlag(false);
       toast.warn(`Deposit Fail!`, {
-        position: "bottom-left",
+        position: 'bottom-left',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
     }
   }, [depositingFlag]);
 
   useEffect(() => {
     if (curSocket) {
-      curSocket.on("message", async (...data: any) => {
-        if (data[0].type === "deposit_fund") {
+      curSocket.on('message', async (...data: any) => {
+        if (data[0].type === 'deposit_fund') {
           setDepositFlag(true);
           if (data[0].ok) {
             updateFund();
             getStatus();
             toast.success(`Deposit Success!`, {
-              position: "bottom-left",
+              position: 'bottom-left',
               autoClose: 1500,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: 'dark',
             });
           } else {
             updateFund();
             getStatus();
             toast.warn(`Deposit Fail! Please try again`, {
-              position: "bottom-left",
+              position: 'bottom-left',
               autoClose: 1500,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: 'dark',
             });
           }
         }
@@ -72,8 +77,8 @@ const DepositComponent = () => {
     const reg = /^-?\d*(\.\d*)?$/;
     if (
       (!isNaN(Number(value)) && reg.test(value)) ||
-      value === "" ||
-      value === "-"
+      value === '' ||
+      value === '-'
     ) {
       return true;
     }
@@ -135,7 +140,7 @@ const DepositComponent = () => {
                     src="theme-assets/images/dice-gold-coin.png"
                     alt="team-profile-1"
                     className="rounded-circle"
-                    style={{ width: "2.5rem" }}
+                    style={{ width: '2.5rem' }}
                   />
                   <p className="ml-2 mb-0">{recvAmount}</p>
                 </div>
@@ -145,20 +150,20 @@ const DepositComponent = () => {
                       if (Number(solAmount) >= 0.01) {
                         setDepositFlag(false);
                         handleDepositSol(solAmount);
-                        setSolAmount("");
+                        setSolAmount('');
                         setRecvAmount(0);
                       } else {
                         toast.warn(
                           `Depositing sol amount is small, you should deposit over 0.01 sol!`,
                           {
-                            position: "bottom-left",
+                            position: 'bottom-left',
                             autoClose: 1500,
                             hideProgressBar: false,
                             closeOnClick: true,
                             pauseOnHover: true,
                             draggable: true,
                             progress: undefined,
-                            theme: "dark",
+                            theme: 'dark',
                           }
                         );
                       }

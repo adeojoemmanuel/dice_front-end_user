@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 // import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import usePersonalInfo from "../../hooks/usePersonalInfo";
-import useSocket from "../../hooks/useSocket";
-import "./style.css";
+import usePersonalInfo from '../../hooks/usePersonalInfo';
+import useSocket from '../../hooks/useSocket';
+import './style.css';
 
 const WithdrawComponent = () => {
   const curSocket = useSocket();
@@ -17,7 +17,7 @@ const WithdrawComponent = () => {
     setWithdrawingFlag,
     setWithdrawSuccessFlag,
   } = usePersonalInfo();
-  const [diceAmount, setDiceAmount] = useState<string>("");
+  const [diceAmount, setDiceAmount] = useState<string>('');
   const [recvAmount, setRecvAmount] = useState<number>(0);
   const [withdrawFlag, setWithdrawFlag] = useState<boolean>(true);
   const rate = 100;
@@ -28,14 +28,14 @@ const WithdrawComponent = () => {
       setWithdrawingFlag(false);
       getStatus();
       toast.warn(`Withdrawing Fail!`, {
-        position: "bottom-left",
+        position: 'bottom-left',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
     }
     if (withdrawSuccessFlag) {
@@ -43,14 +43,14 @@ const WithdrawComponent = () => {
       setWithdrawSuccessFlag(false);
       getStatus();
       toast.success(`Withdraw Success!`, {
-        position: "bottom-left",
+        position: 'bottom-left',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
     }
   }, [withdrawingFlag, withdrawSuccessFlag]);
@@ -110,7 +110,7 @@ const WithdrawComponent = () => {
                     src="theme-assets/images/solana-sol-icon.png"
                     alt="team-profile-1"
                     className="rounded-circle"
-                    style={{ width: "2.5rem" }}
+                    style={{ width: '2.5rem' }}
                   />
                   <p className="ml-2 mb-0">{recvAmount}</p>
                 </div>
@@ -119,7 +119,7 @@ const WithdrawComponent = () => {
                     onClick={() => {
                       setWithdrawFlag(false);
                       handleWithdrawSol(diceAmount);
-                      setDiceAmount("");
+                      setDiceAmount('');
                       setRecvAmount(0);
                     }}
                     className="btn btn-lg btn-gradient-purple btn-glow animated"

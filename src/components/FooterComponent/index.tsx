@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const FooterComponent = () => {
   return (
@@ -18,12 +18,12 @@ const FooterComponent = () => {
                 >
                   <img
                     src="theme-assets/images/dice.png"
-                    style={{ maxHeight: "35px", marginRight: "10px" }}
+                    style={{ maxHeight: '35px', marginRight: '10px' }}
                     alt="Logo"
                   />
                   <span
                     className="logo-text font-weight-bold"
-                    style={{ fontSize: "1rem" }}
+                    style={{ fontSize: '1rem' }}
                   >
                     Reject Rumble
                   </span>
@@ -78,7 +78,7 @@ const FooterComponent = () => {
                       title="Youtube"
                       className="btn font-medium"
                     >
-                      {" "}
+                      {' '}
                       <i className="fa fa-twitter"></i>
                     </a>
                   </li>

@@ -10,10 +10,10 @@ import {
   TransactionSignature,
   Blockhash,
   FeeCalculator,
-  PublicKey
+  PublicKey,
 } from '@solana/web3.js';
 
-import * as anchor from "@project-serum/anchor";
+import * as anchor from '@project-serum/anchor';
 
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 
@@ -25,9 +25,11 @@ import nfts from './nfts.json';
 
 import { sign } from 'crypto';
 
-const { metadata: { Metadata } } = programs;
+const {
+  metadata: { Metadata },
+} = programs;
 
-let conn = new Connection(process.env.REACT_APP_SOLANA_RPC_HOST as string)
+let conn = new Connection(process.env.REACT_APP_SOLANA_RPC_HOST as string);
 
 const FUNDS_LIMIT = 1000;
 
@@ -38,7 +40,7 @@ interface BlockhashAndFeeCalculator {
 
 export const getErrorForTransaction = async (
   connection: Connection,
-  txid: string,
+  txid: string
 ) => {
   // wait for all confirmation before geting transaction
   await connection.confirmTransaction(txid, 'max');
@@ -47,7 +49,7 @@ export const getErrorForTransaction = async (
 
   const errors: string[] = [];
   if (tx?.meta && tx.meta.logMessages) {
-    tx.meta.logMessages.forEach(log => {
+    tx.meta.logMessages.forEach((log) => {
       const regex = /Error: (.*)/gm;
       let m;
       while ((m = regex.exec(log)) !== null) {
@@ -76,7 +78,7 @@ export async function sendTransactionsWithManualRetry(
   connection: Connection,
   wallet: any,
   instructions: TransactionInstruction[][],
-  signers: Keypair[][],
+  signers: Keypair[][]
 ): Promise<(string | undefined)[]> {
   let stopPoint = 0;
   let tries = 0;
@@ -107,7 +109,7 @@ export async function sendTransactionsWithManualRetry(
           wallet,
           instructions[0],
           filteredSigners[0],
-          'single',
+          'single'
         );
         ids.push(id.txid);
         stopPoint = 1;
@@ -118,9 +120,9 @@ export async function sendTransactionsWithManualRetry(
           instructions,
           filteredSigners,
           SequenceType.StopOnFailure,
-          'single',
+          'single'
         );
-        ids = ids.concat(txs.map(t => t.txid));
+        ids = ids.concat(txs.map((t) => t.txid));
       }
     } catch (e) {
       console.error(e);
@@ -146,9 +148,9 @@ export const sendTransactions = async (
   signersSet: Keypair[][],
   sequenceType: SequenceType = SequenceType.StopOnFailure,
   commitment: Commitment = 'singleGossip',
-  successCallback: (txid: string, ind: number) => void = (txid, ind) => { },
+  successCallback: (txid: string, ind: number) => void = (txid, ind) => {},
   failCallback: (reason: string, ind: number) => boolean = (txid, ind) => false,
-  block?: BlockhashAndFeeCalculator,
+  block?: BlockhashAndFeeCalculator
 ): Promise<{ number: number; txs: { txid: string; slot: number }[] }> => {
   if (!wallet.adapter?.publicKey) throw new WalletNotConnectedError();
 
@@ -167,9 +169,9 @@ export const sendTransactions = async (
     }
 
     let transaction = new Transaction();
-    instructions.forEach(instruction => {
+    instructions.forEach((instruction) => {
       // console.log("add instruction", instruction)
-      transaction.add(instruction)
+      transaction.add(instruction);
       // console.log("transaction", transaction)
     });
     // console.log("before sign", transaction)
@@ -177,7 +179,7 @@ export const sendTransactions = async (
     transaction.setSigners(
       // fee payed by the wallet owner
       wallet.adapter?.publicKey,
-      ...signers.map(s => s.publicKey),
+      ...signers.map((s) => s.publicKey)
     );
 
     if (signers.length > 0) {
@@ -191,14 +193,19 @@ export const sendTransactions = async (
 
   // console.log("unsigned txns", unsignedTxns)
 
-  const partiallySignedTransactions = unsignedTxns.filter(t =>
-    t.signatures.find(sig => sig.publicKey.equals(wallet.adapter?.publicKey)),
+  const partiallySignedTransactions = unsignedTxns.filter((t) =>
+    t.signatures.find((sig) => sig.publicKey.equals(wallet.adapter?.publicKey))
   );
   const fullySignedTransactions = unsignedTxns.filter(
-    t => !t.signatures.find(sig => sig.publicKey.equals(wallet.adapter?.publicKey)),
+    (t) =>
+      !t.signatures.find((sig) =>
+        sig.publicKey.equals(wallet.adapter?.publicKey)
+      )
   );
 
-  let signedTxns = await wallet.adapter?._wallet.signAllTransactions(partiallySignedTransactions);
+  let signedTxns = await wallet.adapter?._wallet.signAllTransactions(
+    partiallySignedTransactions
+  );
 
   // console.log("signed txns", signedTxns);
   signedTxns = fullySignedTransactions.concat(signedTxns);
@@ -209,7 +216,7 @@ export const sendTransactions = async (
     'Signed txns length',
     signedTxns.length,
     'vs handed in length',
-    instructionSet.length,
+    instructionSet.length
   );
   for (let i = 0; i < signedTxns.length; i++) {
     const signedTxnPromise = sendSignedTransaction({
@@ -233,7 +240,7 @@ export const sendTransactions = async (
     if (sequenceType !== SequenceType.Parallel) {
       try {
         await signedTxnPromise.then(({ txid, slot }) =>
-          successCallback(txid, i),
+          successCallback(txid, i)
         );
         pendingTxns.push(signedTxnPromise);
       } catch (e) {
@@ -267,23 +274,23 @@ export const sendTransaction = async (
   awaitConfirmation = true,
   commitment: Commitment = 'singleGossip',
   includesFeePayer: boolean = false,
-  block?: BlockhashAndFeeCalculator,
+  block?: BlockhashAndFeeCalculator
 ) => {
   if (!wallet.adapter?.publicKey) throw new WalletNotConnectedError();
 
   let transaction = new Transaction();
-  instructions.forEach(instruction => transaction.add(instruction));
+  instructions.forEach((instruction) => transaction.add(instruction));
   transaction.recentBlockhash = (
     block || (await connection.getRecentBlockhash(commitment))
   ).blockhash;
 
   if (includesFeePayer) {
-    transaction.setSigners(...signers.map(s => s.publicKey));
+    transaction.setSigners(...signers.map((s) => s.publicKey));
   } else {
     transaction.setSigners(
       // fee payed by the wallet owner
       wallet.adapter?.publicKey,
-      ...signers.map(s => s.publicKey),
+      ...signers.map((s) => s.publicKey)
     );
   }
 
@@ -308,7 +315,7 @@ export const sendTransaction = async (
       txid,
       DEFAULT_TIMEOUT,
       connection,
-      true,
+      true
     );
 
     if (!confirmation)
@@ -334,23 +341,23 @@ export const sendTransactionWithRetry = async (
   commitment: Commitment = 'singleGossip',
   includesFeePayer: boolean = false,
   block?: BlockhashAndFeeCalculator,
-  beforeSend?: () => void,
+  beforeSend?: () => void
 ) => {
   if (!wallet.adapter?.publicKey) throw new WalletNotConnectedError();
 
   let transaction = new Transaction();
-  instructions.forEach(instruction => transaction.add(instruction));
+  instructions.forEach((instruction) => transaction.add(instruction));
   transaction.recentBlockhash = (
     block || (await connection.getRecentBlockhash(commitment))
   ).blockhash;
 
   if (includesFeePayer) {
-    transaction.setSigners(...signers.map(s => s.publicKey));
+    transaction.setSigners(...signers.map((s) => s.publicKey));
   } else {
     transaction.setSigners(
       // fee payed by the wallet owner
       wallet.adapter?.publicKey,
-      ...signers.map(s => s.publicKey),
+      ...signers.map((s) => s.publicKey)
     );
   }
 
@@ -399,7 +406,7 @@ export async function sendSignedTransaction({
     rawTransaction,
     {
       skipPreflight: true,
-    },
+    }
   );
 
   console.log('Started awaiting confirmation for', txid);
@@ -417,14 +424,13 @@ export async function sendSignedTransaction({
   // console.log("transacion id", txid)
 
   try {
-
     // console.log("<<<<<<<<<<<<<<<<before singnature>>>>>>>>>>>>>>");
 
     const confirmation = await awaitTransactionSignatureConfirmation(
       txid,
       timeout,
       connection,
-      true,
+      true
     );
 
     // console.log(">>>>>>>>>>>>>>signature result<<<<<<<<<<<<<<<", confirmation);
@@ -448,14 +454,14 @@ export async function sendSignedTransaction({
       simulateResult = (
         await simulateTransaction(connection, signedTransaction, 'single')
       ).value;
-    } catch (e) { }
+    } catch (e) {}
     if (simulateResult && simulateResult.err) {
       if (simulateResult.logs) {
         for (let i = simulateResult.logs.length - 1; i >= 0; --i) {
           const line = simulateResult.logs[i];
           if (line.startsWith('Program log: ')) {
             throw new Error(
-              'Transaction failed: ' + line.slice('Program log: '.length),
+              'Transaction failed: ' + line.slice('Program log: '.length)
             );
           }
         }
@@ -474,12 +480,12 @@ export async function sendSignedTransaction({
 async function simulateTransaction(
   connection: Connection,
   transaction: Transaction,
-  commitment: Commitment,
+  commitment: Commitment
 ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>> {
   // @ts-ignore
   transaction.recentBlockhash = await connection._recentBlockhash(
     // @ts-ignore
-    connection._disableBlockhashCaching,
+    connection._disableBlockhashCaching
   );
 
   const signData = transaction.serializeMessage();
@@ -501,7 +507,7 @@ export const awaitTransactionSignatureConfirmation = async (
   txid: anchor.web3.TransactionSignature,
   timeout: number,
   connection: anchor.web3.Connection,
-  queryStatus = false,
+  queryStatus = false
 ): Promise<anchor.web3.SignatureStatus | null | void> => {
   let done = false;
   let status: anchor.web3.SignatureStatus | null | void = {
@@ -570,7 +576,7 @@ export const awaitTransactionSignatureConfirmation = async (
 };
 
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 const searchNFT = (nft_symbol: any) => {
@@ -581,22 +587,21 @@ const searchNFT = (nft_symbol: any) => {
     }
   });
   return flag;
-}
+};
 
-export async function getTokensForOwner(
-  owner: any
-) {
-
-  console.log("+Get Token Data")
+export async function getTokensForOwner(owner: any) {
+  console.log('+Get Token Data');
 
   const allnfts: any = [];
 
   const nftAccounts: any = [];
 
-  const tokens: any = []
-  const nfts: any = []
+  const tokens: any = [];
+  const nfts: any = [];
 
-  const tokenAccounts = await conn.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_PROGRAM_ID });
+  const tokenAccounts = await conn.getParsedTokenAccountsByOwner(owner, {
+    programId: TOKEN_PROGRAM_ID,
+  });
 
   let tokenAccount, tokenAmount, nftMint;
 
@@ -604,17 +609,24 @@ export async function getTokensForOwner(
     tokenAccount = tokenAccounts.value[index];
     tokenAmount = tokenAccount.account.data.parsed.info.tokenAmount;
     if (tokenAmount.amount == '1' && tokenAmount.decimals == 0) {
-      const nftMint = new PublicKey(tokenAccount.account.data.parsed.info.mint)
+      const nftMint = new PublicKey(tokenAccount.account.data.parsed.info.mint);
       let tokenmetaPubkey = await Metadata.getPDA(nftMint);
-      allnfts.push(tokenmetaPubkey)
-      nftAccounts.push(tokenAccounts.value[index].pubkey)
+      allnfts.push(tokenmetaPubkey);
+      nftAccounts.push(tokenAccounts.value[index].pubkey);
     }
     // console.log(tokenAccount)
-    nftMint = new PublicKey(tokenAccount.account.data.parsed.info.mint)
-    if (nftMint.toBase58() == "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB" || nftMint.toBase58() == "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v") {
+    nftMint = new PublicKey(tokenAccount.account.data.parsed.info.mint);
+    if (
+      nftMint.toBase58() == 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB' ||
+      nftMint.toBase58() == 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'
+    ) {
       // console.log(tokenAccount.account.data)
       if (parseInt(tokenAmount.amount) >= FUNDS_LIMIT) {
-        tokens.push({ account: tokenAccounts.value[index].pubkey, mint: nftMint, amount: parseInt(tokenAmount.amount) })
+        tokens.push({
+          account: tokenAccounts.value[index].pubkey,
+          mint: nftMint,
+          amount: parseInt(tokenAmount.amount),
+        });
       }
     }
   }
@@ -628,13 +640,16 @@ export async function getTokensForOwner(
   const len = Math.floor(buffer.length / 100) + 1;
   let j = 0;
   while (buffer.length > 0) {
-
     if (buffer.length < 100) {
       count = buffer.length;
     } else {
       count = 100;
     }
-    nftinfo = [...nftinfo.concat(await conn.getMultipleAccountsInfo(buffer.splice(0, count)))];
+    nftinfo = [
+      ...nftinfo.concat(
+        await conn.getMultipleAccountsInfo(buffer.splice(0, count))
+      ),
+    ];
     j++;
   }
 
@@ -643,20 +658,19 @@ export async function getTokensForOwner(
   // let tokenCount = nftinfo.length
 
   for (let i = 0; i < nftinfo.length; i++) {
-
     if (nftinfo[i] == null) {
       continue;
     }
 
-    let metadata: any = new Metadata(owner.toBase58(), nftinfo[i])
+    let metadata: any = new Metadata(owner.toBase58(), nftinfo[i]);
 
     // if(metadata.data.data.symbol.includes(process.env.REACT_APP_NFT_SYMBOL)){
     //   tokens.push({ mint : metadata.data.mint})
     // }
     const temp = searchNFT(metadata.data.data.symbol);
     if (temp) {
-      let nftMint = new PublicKey(metadata.data.mint)
-      nfts.push({ mint: nftMint, account: nftAccounts[i] })
+      let nftMint = new PublicKey(metadata.data.mint);
+      nfts.push({ mint: nftMint, account: nftAccounts[i] });
     }
   }
 
@@ -666,5 +680,5 @@ export async function getTokensForOwner(
   //   return 0;
   // })
 
-  return { token: tokens, nft: nfts }
+  return { token: tokens, nft: nfts };
 }

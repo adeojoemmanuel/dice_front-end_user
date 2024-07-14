@@ -1,31 +1,30 @@
-import React, { useState } from "react";
-import { isMobile } from "react-device-detect";
-import { toast } from "react-toastify";
-import useSocket from "../../hooks/useSocket";
-import { useWallet } from "@solana/wallet-adapter-react";
-import usePersonalInfo from "../../hooks/usePersonalInfo";
-import Rolling from "../Rolling";
-import BettingInput from "../BettingInput";
-import "./style.css";
+import React, { useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import { toast } from 'react-toastify';
+import useSocket from '../../hooks/useSocket';
+import { useWallet } from '@solana/wallet-adapter-react';
+import usePersonalInfo from '../../hooks/usePersonalInfo';
+import Rolling from '../Rolling';
+import BettingInput from '../BettingInput';
+import './style.css';
 
 const BettingComponent = () => {
   const { fund, betColor, bettingFlag } = usePersonalInfo();
   const curSocket = useSocket();
   const { publicKey } = useWallet();
-  const [betAmount, setBetAmount] = useState("");
+  const [betAmount, setBetAmount] = useState('');
 
   if (curSocket) {
     curSocket?.emit(
-      "betting",
+      'betting',
       JSON.stringify({
         wallet: publicKey?.toBase58(),
       })
     );
   }
 
-  
   const clearBetAmount = () => {
-    setBetAmount("");
+    setBetAmount('');
   };
 
   const increaseAmount = (amount: number) => {
@@ -33,14 +32,14 @@ const BettingComponent = () => {
       setBetAmount((Number(betAmount) + amount).toString());
     } else {
       toast.warn(`You don't have enough Dice!`, {
-        position: "bottom-left",
+        position: 'bottom-left',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
     }
   };
@@ -54,14 +53,14 @@ const BettingComponent = () => {
       setBetAmount((Number(betAmount) * 2).toString());
     } else {
       toast.warn(`You don't have enough Dice!`, {
-        position: "bottom-left",
+        position: 'bottom-left',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
     }
   };
@@ -72,62 +71,62 @@ const BettingComponent = () => {
 
   const betGreen = () => {
     if (
-      betAmount === "" ||
+      betAmount === '' ||
       Number(betAmount) <= 0 ||
       fund === 0 ||
       fund < Number(betAmount)
     ) {
       toast.warning(`You can't bet less than 0`, {
-        position: "bottom-left",
+        position: 'bottom-left',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
     } else {
-      if (bettingFlag && betColor === "") {
+      if (bettingFlag && betColor === '') {
         curSocket?.emit(
-          "betting",
+          'betting',
           JSON.stringify({
             wallet: publicKey?.toBase58(),
             amount: betAmount,
-            type: "green",
+            type: 'green',
           })
         );
         toast.success(`Bet ${betAmount} Dice on Green Part`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
-      } else if (betColor !== "") {
+      } else if (betColor !== '') {
         toast.error(`You already bet!`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
       } else {
         toast.error(`Betting is end`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
       }
     }
@@ -135,62 +134,62 @@ const BettingComponent = () => {
 
   const betBlue = () => {
     if (
-      betAmount === "" ||
+      betAmount === '' ||
       Number(betAmount) <= 0 ||
       fund === 0 ||
       fund < Number(betAmount)
     ) {
       toast.warning(`You can't bet less than 0`, {
-        position: "bottom-left",
+        position: 'bottom-left',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
     } else {
-      if (bettingFlag && betColor === "") {
+      if (bettingFlag && betColor === '') {
         curSocket?.emit(
-          "betting",
+          'betting',
           JSON.stringify({
             wallet: publicKey?.toBase58(),
             amount: betAmount,
-            type: "blue",
+            type: 'blue',
           })
         );
         toast.success(`Bet ${betAmount} Dice on Blue Part`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
-      } else if (betColor !== "") {
+      } else if (betColor !== '') {
         toast.error(`You were already bet!`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
       } else {
         toast.error(`Betting is end`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
       }
     }
@@ -198,62 +197,62 @@ const BettingComponent = () => {
 
   const betSame = () => {
     if (
-      betAmount === "" ||
+      betAmount === '' ||
       Number(betAmount) <= 0 ||
       fund === 0 ||
       fund < Number(betAmount)
     ) {
       toast.warning(`You can't bet less than 0`, {
-        position: "bottom-left",
+        position: 'bottom-left',
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
     } else {
-      if (bettingFlag && betColor === "") {
+      if (bettingFlag && betColor === '') {
         curSocket?.emit(
-          "betting",
+          'betting',
           JSON.stringify({
             wallet: publicKey?.toBase58(),
             amount: betAmount,
-            type: "same",
+            type: 'same',
           })
         );
         toast.success(`Bet ${betAmount} Dice on Blue Part`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
-      } else if (betColor !== "") {
+      } else if (betColor !== '') {
         toast.error(`You already bet!`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
       } else {
         toast.error(`Betting is end`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
       }
     }
@@ -391,9 +390,9 @@ const BettingComponent = () => {
           <div className="row">
             <div
               className={
-                betColor === "green"
-                  ? "col-sm-12 col-md-6 col-lg-4 mb-5 animated betting"
-                  : "col-sm-12 col-md-6 col-lg-4 mb-5 animated"
+                betColor === 'green'
+                  ? 'col-sm-12 col-md-6 col-lg-4 mb-5 animated betting'
+                  : 'col-sm-12 col-md-6 col-lg-4 mb-5 animated'
               }
               data-animation="jello"
               data-animation-delay="0.8s"
@@ -420,9 +419,9 @@ const BettingComponent = () => {
             </div>
             <div
               className={
-                betColor === "same"
-                  ? "col-sm-12 col-md-6 col-lg-4 mb-5 animated betting"
-                  : "col-sm-12 col-md-6 col-lg-4 mb-5 animated"
+                betColor === 'same'
+                  ? 'col-sm-12 col-md-6 col-lg-4 mb-5 animated betting'
+                  : 'col-sm-12 col-md-6 col-lg-4 mb-5 animated'
               }
               data-animation="jello"
               data-animation-delay="0.9s"
@@ -449,9 +448,9 @@ const BettingComponent = () => {
             </div>
             <div
               className={
-                betColor === "blue"
-                  ? "col-sm-12 col-md-6 col-lg-4 mb-5 animated betting"
-                  : "col-sm-12 col-md-6 col-lg-4 mb-5 animated"
+                betColor === 'blue'
+                  ? 'col-sm-12 col-md-6 col-lg-4 mb-5 animated betting'
+                  : 'col-sm-12 col-md-6 col-lg-4 mb-5 animated'
               }
               data-animation="jello"
               data-animation-delay="1.0s"

@@ -4,10 +4,17 @@ import TaskBox from '../connection-box/task-box';
 import styles from './wallet-button.module.scss';
 import { WrongWalletTaskBoxProps } from '../../types/wallet-types';
 
-const WrongWalletTaskBox: React.FC<WrongWalletTaskBoxProps> = ({ type, points, buttonText }) => (
+const WrongWalletTaskBox: React.FC<WrongWalletTaskBoxProps> = ({
+  type,
+  points,
+  buttonText,
+}) => (
   <>
     <TaskBox type={type} points={points} completed={false}>
-      <div className={styles.customWalletMultiButton} style={{ backgroundColor: 'transparent', fontSize: '22px' }}>
+      <div
+        className={styles.customWalletMultiButton}
+        style={{ backgroundColor: 'transparent', fontSize: '22px' }}
+      >
         {buttonText}
       </div>
     </TaskBox>

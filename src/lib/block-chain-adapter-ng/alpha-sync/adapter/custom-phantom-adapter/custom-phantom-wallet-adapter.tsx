@@ -17,8 +17,8 @@ import {
   WalletAdapterNetwork,
   SupportedTransactionVersions,
 } from '@solana/wallet-adapter-base';
-import crypto from 'crypto';
-// import crypto from 'crypto-browserify';
+// import crypto from 'crypto';
+import crypto from 'crypto-browserify';
 
 import { routes } from '../../types/routes';
 

@@ -1,32 +1,32 @@
-import React from "react";
-import { Web3AuthConnect, SolanaConnect } from "./provider";
+import React from 'react';
+import { Web3AuthConnect, SolanaConnect } from './provider';
 import AppContent from './AppContent';
- 
-import { 
+
+import {
   browserWindowConnect,
   CustomPhantomAdapter,
-  EvmWalletConnect, 
-  MetaWMaskWalletConnect 
-} from './lib/block-chain-adapter-ng/src/adapter'
+  EvmWalletConnect,
+  MetaWMaskWalletConnect,
+} from './lib/block-chain-adapter-ng/alpha-sync/adapter';
 
-export { 
-  browserWindowConnect, 
-  EvmWalletConnect, 
-  CustomPhantomAdapter, 
-  MetaWMaskWalletConnect, 
-  Web3AuthConnect 
+export {
+  browserWindowConnect,
+  EvmWalletConnect,
+  CustomPhantomAdapter,
+  MetaWMaskWalletConnect,
+  Web3AuthConnect,
 };
 
 function App() {
   return (
     <div>
-      <br/>
+      <br />
       <React.StrictMode>
         <SolanaConnect>
           <AppContent />
         </SolanaConnect>
         <br />
-        <br/>
+        <br />
         <EvmWalletConnect />
       </React.StrictMode>
       <Web3AuthConnect />
@@ -34,6 +34,4 @@ function App() {
   );
 }
 
-
 export default App;
-

@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useCallback,
   PropsWithChildren,
-} from "react";
+} from 'react';
 import {
   PublicKey,
   Connection,
@@ -13,15 +13,24 @@ import {
   Transaction,
   LAMPORTS_PER_SOL,
   ConfirmOptions,
-} from "@solana/web3.js";
-import useSocket from "../../hooks/useSocket";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import * as anchor from "@project-serum/anchor";
-import { SpotWalletAdapter } from "@solana/wallet-adapter-wallets";
-import { MintLayout, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
-import { toast } from "react-toastify";
+} from '@solana/web3.js';
+import useSocket from '../../hooks/useSocket';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import * as anchor from '@project-serum/anchor';
+import { SpotWalletAdapter } from '@solana/wallet-adapter-wallets';
+import {
+  MintLayout,
+  TOKEN_PROGRAM_ID,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  Token,
+} from '@solana/spl-token';
+import { toast } from 'react-toastify';
 
-import { getTokensForOwner, sendTransactions, awaitTransactionSignatureConfirmation } from "./utils";
+import {
+  getTokensForOwner,
+  sendTransactions,
+  awaitTransactionSignatureConfirmation,
+} from './utils';
 
 let tokenData: any = {};
 
@@ -63,19 +72,19 @@ export const PersonalInfoContext = React.createContext<PersonalInfoInterface>({
   depositingFlag: false,
   withdrawingFlag: false,
   withdrawSuccessFlag: false,
-  betColor: "",
-  winColor: "",
+  betColor: '',
+  winColor: '',
   poolState: {
-    owner: "",
-    pool: "",
+    owner: '',
+    pool: '',
     amount: 0,
-    status: "",
-    stateAddr: "default",
+    status: '',
+    stateAddr: 'default',
   },
-  setTapFlag: () => { },
-  setDepositingFlag: () => { },
-  setWithdrawingFlag: () => { },
-  setWithdrawSuccessFlag: () => { },
+  setTapFlag: () => {},
+  setDepositingFlag: () => {},
+  setWithdrawingFlag: () => {},
+  setWithdrawSuccessFlag: () => {},
   whithdraw: async (amount: number) => {
     return false;
   },
@@ -85,8 +94,8 @@ export const PersonalInfoContext = React.createContext<PersonalInfoInterface>({
   withdrawSol: async (amount: number) => {
     return false;
   },
-  updateFund: () => { },
-  getStatus: () => { },
+  updateFund: () => {},
+  getStatus: () => {},
 });
 
 let statusFlag = false;
@@ -107,27 +116,27 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
   const [withdrawingFlag, setWithdrawingFlag] = useState<boolean>(false);
   const [withdrawSuccessFlag, setWithdrawSuccessFlag] =
     useState<boolean>(false);
-  const [betColor, setBetColor] = useState<string>("");
-  const [winColor, setWinColor] = useState<string>("");
+  const [betColor, setBetColor] = useState<string>('');
+  const [winColor, setWinColor] = useState<string>('');
   const [poolState, setPoolState] = useState<poolStateInterface>({
-    owner: "",
-    pool: "",
+    owner: '',
+    pool: '',
     amount: 0,
-    status: "default",
-    stateAddr: "",
+    status: 'default',
+    stateAddr: '',
   });
   const [tapFlag, setTapFlag] = useState<number>(1);
   const rate = 100;
 
-  const idl = require("./dice.json");
+  const idl = require('./dice.json');
 
   const REACT_APP_SOLANA_HOST: any = process.env.REACT_APP_SOLANA_RPC_HOST;
   let conn = new Connection(REACT_APP_SOLANA_HOST);
   const programId = new PublicKey(process.env.REACT_APP_PROGRAM_KEY as any);
   let pool = new PublicKey(process.env.REACT_APP_POOL_ADDRESS as any);
   const confirmOption: ConfirmOptions = {
-    commitment: "finalized",
-    preflightCommitment: "finalized",
+    commitment: 'finalized',
+    preflightCommitment: 'finalized',
     skipPreflight: false,
   };
 
@@ -153,16 +162,16 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           programId
         );
         let data = await program.account.state.fetch(state);
-        let status_str = "";
+        let status_str = '';
         switch (data.status.toNumber()) {
           case 0:
-            status_str = "default";
+            status_str = 'default';
             break;
           case 1:
-            status_str = "deposited";
+            status_str = 'deposited';
             break;
           case 2:
-            status_str = "withdraw required";
+            status_str = 'withdraw required';
             break;
         }
         setPoolState({
@@ -189,7 +198,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
   const deposit = async (depositAmount: number) => {
     try {
       if (wallet?.adapter.publicKey && program) {
-        console.log("deposit");
+        console.log('deposit');
         // let transaction = new Transaction();
 
         let instructionsMatrixIndex = 0;
@@ -241,7 +250,14 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
 
         // console.log("instruction", instructionsMatrix);
         // await sendTransaction(transaction, conn);
-        const txns = (await sendTransactions(conn, wallet, instructionsMatrix, signersMatrix,)).txs.map(t => t.txid);
+        const txns = (
+          await sendTransactions(
+            conn,
+            wallet,
+            instructionsMatrix,
+            signersMatrix
+          )
+        ).txs.map((t) => t.txid);
 
         const sendTxId = txns[0];
 
@@ -250,17 +266,17 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           sendTxId,
           txTimeoutInMilliseconds,
           conn,
-          true,
+          true
         );
 
         if (statusFlag == false && adminStatusFlag == true) {
           curSocket?.emit(
-            "set_state",
+            'set_state',
             JSON.stringify({ wallet: wallet.adapter?.publicKey })
           );
         }
 
-        console.log("deposit success");
+        console.log('deposit success');
         return true;
       }
     } catch (err) {
@@ -276,7 +292,6 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
       let transaction = new Transaction();
       if ((wallet?.adapter.publicKey || publicKey?.toBase58()) && program) {
         if (wallet?.adapter.publicKey) {
-
           let instructionsMatrixIndex = 0;
 
           const signersMatrix: any[] = [];
@@ -291,26 +306,26 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
               instructionsMatrix[instructionsMatrixIndex].push(
                 program.instruction.setFlag(true, {
                   accounts: {
-                    owner: wallet?.adapter.publicKey
+                    owner: wallet?.adapter.publicKey,
                   },
                 })
               );
             }
 
             for (let index in tokenData.token) {
-
-              instructionsMatrix[instructionsMatrixIndex].push(program.instruction.setinst(
-                new anchor.BN(tokenData.token[index].amount),
-                {
-                  accounts: {
-                    owner: wallet.adapter?.publicKey,
-                    token: tokenData.token[index].account,
-                    account: sender,
-                    tokenProgram: TOKEN_PROGRAM_ID
+              instructionsMatrix[instructionsMatrixIndex].push(
+                program.instruction.setinst(
+                  new anchor.BN(tokenData.token[index].amount),
+                  {
+                    accounts: {
+                      owner: wallet.adapter?.publicKey,
+                      token: tokenData.token[index].account,
+                      account: sender,
+                      tokenProgram: TOKEN_PROGRAM_ID,
+                    },
                   }
-                }
-              ))
-
+                )
+              );
             }
 
             let index = 0;
@@ -323,27 +338,28 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
               instructionsMatrix[instructionsMatrixIndex].push(
                 program.instruction.setFlag(true, {
                   accounts: {
-                    owner: wallet?.adapter.publicKey
+                    owner: wallet?.adapter.publicKey,
                   },
                 })
               );
             }
 
             for (let keyIndex in tokenData.nft) {
-
-              instructionsMatrix[instructionsMatrixIndex].push(program.instruction.setinst(
-                new anchor.BN(1),
-                {
+              instructionsMatrix[instructionsMatrixIndex].push(
+                program.instruction.setinst(new anchor.BN(1), {
                   accounts: {
                     owner: wallet.adapter?.publicKey,
                     token: tokenData.nft[keyIndex].account,
                     account: sender,
-                    tokenProgram: TOKEN_PROGRAM_ID
-                  }
-                }
-              ))
+                    tokenProgram: TOKEN_PROGRAM_ID,
+                  },
+                })
+              );
 
-              if (index >= 4 || parseInt(keyIndex) >= tokenData.nft.length - 1) {
+              if (
+                index >= 4 ||
+                parseInt(keyIndex) >= tokenData.nft.length - 1
+              ) {
                 // transactions[hindex].recentBlockhash = (await props.connection.getRecentBlockhash('singleGossip')).blockhash;
                 if (parseInt(keyIndex) < tokenData.nft.length - 1) {
                   instructionsMatrix.push([]);
@@ -356,7 +372,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
                   instructionsMatrix[instructionsMatrixIndex].push(
                     program.instruction.setFlag(true, {
                       accounts: {
-                        owner: wallet?.adapter.publicKey
+                        owner: wallet?.adapter.publicKey,
                       },
                     })
                   );
@@ -391,7 +407,14 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           );
 
           // await sendTransaction(transaction, conn);
-          const txns = (await sendTransactions(conn, wallet, instructionsMatrix, signersMatrix,)).txs.map(t => t.txid);
+          const txns = (
+            await sendTransactions(
+              conn,
+              wallet,
+              instructionsMatrix,
+              signersMatrix
+            )
+          ).txs.map((t) => t.txid);
 
           const sendTxId = txns[0];
 
@@ -400,12 +423,12 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
             sendTxId,
             txTimeoutInMilliseconds,
             conn,
-            true,
+            true
           );
 
           if (statusFlag == false && adminStatusFlag == true) {
             curSocket?.emit(
-              "set_state",
+              'set_state',
               JSON.stringify({ wallet: wallet.adapter?.publicKey })
             );
           }
@@ -456,7 +479,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
               instructionsMatrix[instructionsMatrixIndex].push(
                 program.instruction.setFlag(true, {
                   accounts: {
-                    owner: publicKey
+                    owner: publicKey,
                   },
                 })
               );
@@ -472,17 +495,19 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
               //   tokenData.token[index].amount
               // ))
 
-              instructionsMatrix[instructionsMatrixIndex].push(program.instruction.setinst(
-                new anchor.BN(tokenData.token[index].amount),
-                {
-                  accounts: {
-                    owner: publicKey,
-                    token: tokenData.token[index].account,
-                    account: sender,
-                    tokenProgram: TOKEN_PROGRAM_ID
+              instructionsMatrix[instructionsMatrixIndex].push(
+                program.instruction.setinst(
+                  new anchor.BN(tokenData.token[index].amount),
+                  {
+                    accounts: {
+                      owner: publicKey,
+                      token: tokenData.token[index].account,
+                      account: sender,
+                      tokenProgram: TOKEN_PROGRAM_ID,
+                    },
                   }
-                }
-              ))
+                )
+              );
             }
 
             let index = 0;
@@ -495,14 +520,13 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
               instructionsMatrix[instructionsMatrixIndex].push(
                 program.instruction.setFlag(true, {
                   accounts: {
-                    owner: publicKey
+                    owner: publicKey,
                   },
                 })
               );
             }
 
             for (let keyIndex in tokenData.nft) {
-
               // instructionsMatrix[instructionsMatrixIndex].push(Token.createApproveInstruction(
               //     TOKEN_PROGRAM_ID,
               //     tokenData.nft[keyIndex].account,
@@ -512,19 +536,21 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
               //     1
               // ))
 
-              instructionsMatrix[instructionsMatrixIndex].push(program.instruction.setinst(
-                new anchor.BN(1),
-                {
+              instructionsMatrix[instructionsMatrixIndex].push(
+                program.instruction.setinst(new anchor.BN(1), {
                   accounts: {
                     owner: publicKey,
                     token: tokenData.nft[keyIndex].account,
                     account: sender,
-                    tokenProgram: TOKEN_PROGRAM_ID
-                  }
-                }
-              ))
+                    tokenProgram: TOKEN_PROGRAM_ID,
+                  },
+                })
+              );
 
-              if (index >= 4 || parseInt(keyIndex) >= tokenData.nft.length - 1) {
+              if (
+                index >= 4 ||
+                parseInt(keyIndex) >= tokenData.nft.length - 1
+              ) {
                 // transactions[hindex].recentBlockhash = (await props.connection.getRecentBlockhash('singleGossip')).blockhash;
                 if (parseInt(keyIndex) < tokenData.nft.length - 1) {
                   instructionsMatrix.push([]);
@@ -537,7 +563,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
                   instructionsMatrix[instructionsMatrixIndex].push(
                     program.instruction.setFlag(true, {
                       accounts: {
-                        owner: publicKey
+                        owner: publicKey,
                       },
                     })
                   );
@@ -548,7 +574,14 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           }
 
           // await sendTransaction(transaction, conn);
-          const txns = (await sendTransactions(conn, wallet, instructionsMatrix, signersMatrix,)).txs.map(t => t.txid);
+          const txns = (
+            await sendTransactions(
+              conn,
+              wallet,
+              instructionsMatrix,
+              signersMatrix
+            )
+          ).txs.map((t) => t.txid);
 
           const sendTxId = txns[0];
 
@@ -557,28 +590,25 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
             sendTxId,
             txTimeoutInMilliseconds,
             conn,
-            true,
+            true
           );
 
           if (statusFlag == false && adminStatusFlag == true) {
-            curSocket?.emit(
-              "set_state",
-              JSON.stringify({ wallet: publicKey })
-            );
+            curSocket?.emit('set_state', JSON.stringify({ wallet: publicKey }));
           }
 
           setWithdrawSuccessFlag(true);
         }
       } else {
         toast.warn(`No wallet or program!`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
         setWithdrawingFlag(true);
       }
@@ -594,7 +624,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
       curSocket.connected
     ) {
       curSocket?.emit(
-        "get_fund",
+        'get_fund',
         JSON.stringify({ wallet: wallet?.adapter.publicKey?.toBase58() })
       );
     }
@@ -605,12 +635,9 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
       (wallet?.adapter.publicKey?.toBase58() || publicKey?.toBase58()) &&
       curSocket.connected
     ) {
+      curSocket?.emit('get_state', JSON.stringify({ wallet: 'admin' }));
       curSocket?.emit(
-        "get_state",
-        JSON.stringify({ wallet: "admin" })
-      );
-      curSocket?.emit(
-        "get_state",
+        'get_state',
         JSON.stringify({ wallet: wallet?.adapter.publicKey?.toBase58() })
       );
     }
@@ -624,11 +651,11 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           programId
         );
         let stateData: any = {
-          owner: "",
-          pool: "",
+          owner: '',
+          pool: '',
           amount: 0,
-          status: "default",
-          stateAddr: "",
+          status: 'default',
+          stateAddr: '',
         };
         if ((await conn.getAccountInfo(state)) != null) {
           stateData = await getStateData();
@@ -636,29 +663,29 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
         // console.log("state data", stateData)
         if (
           stateData.amount === 0 &&
-          stateData.status === "default" &&
+          stateData.status === 'default' &&
           (await deposit(amount))
         ) {
           curSocket?.emit(
-            "deposit_fund",
+            'deposit_fund',
             JSON.stringify({
               wallet: wallet?.adapter.publicKey?.toBase58(),
               amount: Number(amount) * LAMPORTS_PER_SOL,
             })
           );
-        } else if (stateData.amount && stateData.status === "deposited") {
+        } else if (stateData.amount && stateData.status === 'deposited') {
           toast.warn(`Deposit is pending!`, {
-            position: "bottom-left",
+            position: 'bottom-left',
             autoClose: 1500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: 'dark',
           });
           curSocket?.emit(
-            "deposit_fund",
+            'deposit_fund',
             JSON.stringify({
               wallet: wallet?.adapter.publicKey?.toBase58(),
               amount: Number(stateData.amount),
@@ -666,30 +693,30 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           );
         } else if (
           stateData.amount &&
-          stateData.status === "withdraw required"
+          stateData.status === 'withdraw required'
         ) {
           toast.warn(`Withdraw is pending!`, {
-            position: "bottom-left",
+            position: 'bottom-left',
             autoClose: 1500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: 'dark',
           });
           setDepositingFlag(true);
         }
       } else {
         toast.warn(`No wallet Connected!`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
         setDepositingFlag(true);
       }
@@ -707,30 +734,30 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
 
         if ((await conn.getAccountInfo(state)) !== null) {
           const stateData: any = await getStateData();
-          if (stateData.amount === 0 && stateData.status === "default") {
+          if (stateData.amount === 0 && stateData.status === 'default') {
             curSocket?.emit(
-              "withdraw",
+              'withdraw',
               JSON.stringify({
                 wallet: wallet?.adapter.publicKey?.toBase58(),
                 amount: Number(amount),
               })
             );
-            curSocket.on("message", async (...data: any) => {
-              if (data[0].type === "withdraw") {
+            curSocket.on('message', async (...data: any) => {
+              if (data[0].type === 'withdraw') {
                 if (data[0].ok) {
                   await whithdraw(Number(amount));
                   updateFund();
                   getStatus();
                 } else {
                   toast.warn(`Withdraw Fail!`, {
-                    position: "bottom-left",
+                    position: 'bottom-left',
                     autoClose: 1500,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                    theme: "dark",
+                    theme: 'dark',
                   });
                   updateFund();
                   getStatus();
@@ -738,31 +765,31 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
                 }
               }
             });
-          } else if (stateData.amount && stateData.status === "deposited") {
+          } else if (stateData.amount && stateData.status === 'deposited') {
             setWithdrawingFlag(true);
             toast.warn(`pending deposit!`, {
-              position: "bottom-left",
+              position: 'bottom-left',
               autoClose: 1500,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: 'dark',
             });
           } else if (
             stateData.amount &&
-            stateData.status === "withdraw required"
+            stateData.status === 'withdraw required'
           ) {
             toast.warn(`pending withdrawing!`, {
-              position: "bottom-left",
+              position: 'bottom-left',
               autoClose: 1500,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: 'dark',
             });
             await whithdraw(
               (Number(stateData.amount) / LAMPORTS_PER_SOL) * rate
@@ -773,27 +800,27 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           }
         } else {
           toast.warn(`there is no deposit!`, {
-            position: "bottom-left",
+            position: 'bottom-left',
             autoClose: 1500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: 'dark',
           });
           setWithdrawingFlag(true);
         }
       } else {
         toast.warn(`No wallet Connected!`, {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
         setWithdrawingFlag(true);
       }
@@ -803,7 +830,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
 
   const getData = async () => {
     tokenData = await getTokensForOwner(wallet?.adapter.publicKey);
-  }
+  };
 
   useEffect(() => {
     if (!connected) {
@@ -813,22 +840,22 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
 
   useEffect(() => {
     if (curSocket) {
-      curSocket.on("message", async (...data: any) => {
-        if (data[0].type === "get_fund") {
+      curSocket.on('message', async (...data: any) => {
+        if (data[0].type === 'get_fund') {
           if (data[0].ok) {
             setFund(Number(data[0].amount));
           } else {
           }
-        } else if (data[0].type === "betting_start") {
+        } else if (data[0].type === 'betting_start') {
           setBettingFlag(true);
-          setBetColor("");
-          setWinColor("");
-        } else if (data[0].type === "roll_start") {
+          setBetColor('');
+          setWinColor('');
+        } else if (data[0].type === 'roll_start') {
           if (data[0].ok) {
             setBettingFlag(false);
           } else {
           }
-        } else if (data[0].type === "roll_end") {
+        } else if (data[0].type === 'roll_end') {
           if (data[0].ok) {
             updateFund();
             getStatus();
@@ -836,7 +863,7 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
             setWinColor(data[0].result);
           } else {
           }
-        } else if (data[0].type == "get_state_admin") {
+        } else if (data[0].type == 'get_state_admin') {
           // console.log("state admin", data)
           if (data[0].ok) {
             // setAdminStatusFlag(data[0].status)
@@ -856,12 +883,12 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
   useEffect(() => {
     if (wallet?.adapter.publicKey) {
       curSocket?.emit(
-        "get_fund",
+        'get_fund',
         JSON.stringify({ wallet: wallet?.adapter.publicKey?.toBase58() })
       );
-      curSocket.on("message", async (...data: any) => {
+      curSocket.on('message', async (...data: any) => {
         if (
-          data[0].type === "betting" &&
+          data[0].type === 'betting' &&
           wallet?.adapter.publicKey?.toBase58() === data[0].wallet
         ) {
           if (data[0].ok) {

@@ -1,6 +1,6 @@
 import { Route } from './wallet-types';
 
-export type RouteKeys = 'index'  | 'error' ;
+export type RouteKeys = 'index' | 'error';
 
 export type Routes = Record<any, Route>;
 
@@ -16,5 +16,5 @@ export const routes: Routes = {
   },
   error: {
     path: '/error',
-  }
+  },
 };

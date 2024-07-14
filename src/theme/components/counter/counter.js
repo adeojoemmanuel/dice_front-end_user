@@ -1,10 +1,10 @@
 class CounterComponent extends HTMLElement {
-    constructor() {
-      super();
-    }
-  
-    connectedCallback() {
-      this.innerHTML = `<section class="counter-area content" id="counter-area" data-midnight="white">
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.innerHTML = `<section class="counter-area content" id="counter-area" data-midnight="white">
       <div class="bg-banner"></div>
       <div class="counter-content container-fluid d-flex align-items-center">
           <div class="container">
@@ -73,7 +73,7 @@ class CounterComponent extends HTMLElement {
           </div>
       </div>
   </section>`;
-    }
+  }
 }
 
 customElements.define('counter-component', CounterComponent);

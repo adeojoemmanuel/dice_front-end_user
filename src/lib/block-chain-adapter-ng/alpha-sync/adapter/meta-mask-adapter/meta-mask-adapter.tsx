@@ -34,7 +34,7 @@ const WALLETS = [
   },
 ];
 
-const Web3AuthConnect: React.FC = () => {
+const MetaWMaskWalletConnect: React.FC = () => {
   const [account, setAccount] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -162,7 +162,7 @@ const Web3AuthConnect: React.FC = () => {
         </div>
       ) : (
         <div>
-          <p>Select a wallet to connect:</p>
+          <p>Select a wallet meta mask wallet:</p>
           {availableWallets.length > 0 ? (
             availableWallets.map((wallet) => (
               <button
@@ -189,4 +189,4 @@ const Web3AuthConnect: React.FC = () => {
   );
 };
 
-export default Web3AuthConnect;
+export default MetaWMaskWalletConnect;

@@ -26,27 +26,43 @@ const DisConnectWalletTaskBox: React.FC<DisConnectWalletTaskBoxProps> = ({
   buttonText,
   user,
 }) => (
-  <TaskBox type={type} points={0} completed={false}  className={styles.walletTaskBox}>
+  <TaskBox
+    type={type}
+    points={0}
+    completed={false}
+    className={styles.walletTaskBox}
+  >
     <>{buttonText}</>
-    {user?.userWallet?.map(({ key, value }: { key: string; value: string }, index: number) => {
-      const formatted = formatWalletAddressFunc(value);
-      return (
-        <div key={key} className={styles.walletAddressContainer}>
-          <div style={{ display: 'flex', alignItems: 'center', border: '1px solid black' }}>
-            <span className={styles.walletAddress}>{formatted}</span>
-            <span className={styles.copyIcon}>
-              <ContentCopyIcon
+    {user?.userWallet?.map(
+      ({ key, value }: { key: string; value: string }, index: number) => {
+        const formatted = formatWalletAddressFunc(value);
+        return (
+          <div key={key} className={styles.walletAddressContainer}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                border: '1px solid black',
+              }}
+            >
+              <span className={styles.walletAddress}>{formatted}</span>
+              <span className={styles.copyIcon}>
+                <ContentCopyIcon
+                  style={{ width: 20, height: 20, opacity: 0.85 }}
+                  onClick={() => console.log('triggeredClick')}
+                />
+              </span>
+            </div>
+            <span className={styles.endIcon}>
+              <DeleteIcon
                 style={{ width: 20, height: 20, opacity: 0.85 }}
-                onClick={() => console.log('triggeredClick')}
+                onClick={() => console.log('')}
               />
             </span>
           </div>
-          <span className={styles.endIcon}>
-            <DeleteIcon style={{ width: 20, height: 20, opacity: 0.85 }} onClick={() => console.log('')} />
-          </span>
-        </div>
-      );
-    })}
+        );
+      }
+    )}
   </TaskBox>
 );
 

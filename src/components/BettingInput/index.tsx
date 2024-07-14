@@ -1,6 +1,6 @@
-import React from "react";
-import { isMobile } from "react-device-detect";
-import "./style.css";
+import React from 'react';
+import { isMobile } from 'react-device-detect';
+import './style.css';
 
 export default function BettingInput(props: {
   betAmount: string | number | readonly string[] | undefined;

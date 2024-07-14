@@ -12,7 +12,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
-      'crypto': 'crypto-browserify',
+      crypto: 'crypto-browserify',
     },
     fallback: {
       crypto: require.resolve('crypto-browserify'),

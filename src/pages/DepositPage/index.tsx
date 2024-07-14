@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import DepositComponet from "../../components/DepositComponent";
+import DepositComponet from '../../components/DepositComponent';
 
 const DepositPage = () => {
   return <DepositComponet />;

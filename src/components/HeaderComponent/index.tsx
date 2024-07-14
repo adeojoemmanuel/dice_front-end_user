@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useWallet } from "@solana/wallet-adapter-react";
-import WalletConnect from "../Wallet/connect";
-import usePersonalInfo from "../../hooks/usePersonalInfo";
-import "./style.css";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useWallet } from '@solana/wallet-adapter-react';
+import WalletConnect from '../Wallet/connect';
+import usePersonalInfo from '../../hooks/usePersonalInfo';
+import './style.css';
 const HeaderComponent = () => {
   const { fund, tapFlag, setTapFlag } = usePersonalInfo();
   const { connected } = useWallet();
@@ -23,19 +23,19 @@ const HeaderComponent = () => {
               className="navbar-brand animated"
               data-animation="fadeInDown"
               data-animation-delay="1s"
-              to={"/"}
+              to={'/'}
               onClick={() => {
                 setTapFlag(1);
               }}
             >
               <img
                 src="./theme-assets/images/dice.png"
-                style={{ maxHeight: "35px" }}
+                style={{ maxHeight: '35px' }}
                 alt="Logo"
               />
               <span
                 className="brand-text font-weight-bold"
-                style={{ fontSize: "16px" }}
+                style={{ fontSize: '16px' }}
               >
                 Reject Rumble
               </span>
@@ -55,15 +55,15 @@ const HeaderComponent = () => {
             <div
               className={
                 mobileMenuOpen
-                  ? "collapse navbar-collapse show"
-                  : "collapse navbar-collapse"
+                  ? 'collapse navbar-collapse show'
+                  : 'collapse navbar-collapse'
               }
               id="navbarCollapse"
             >
               <div
                 id="navigation"
                 className="navbar-nav ml-auto"
-                style={{ paddingTop: "3px" }}
+                style={{ paddingTop: '3px' }}
               >
                 <ul className="navbar-nav mt-1">
                   <li
@@ -101,7 +101,7 @@ const HeaderComponent = () => {
 
                 <form className="form-inline mt-2 mt-md-0">
                   {connected ? (
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <Link
                         className="btn btn-sm btn-gradient-purple btn-glow my-2 my-sm-0 animated mr-2"
                         data-animation="fadeInDown"

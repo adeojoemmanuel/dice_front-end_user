@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { PersonalInfoContext } from "../contexts/PersonalInfoContext";
+import { useContext } from 'react';
+import { PersonalInfoContext } from '../contexts/PersonalInfoContext';
 
 const usePersonalInfo = () => {
   const {
@@ -20,7 +20,7 @@ const usePersonalInfo = () => {
     depositSol,
     withdrawSol,
     updateFund,
-    getStatus
+    getStatus,
   } = useContext(PersonalInfoContext);
   return {
     tapFlag: tapFlag,
@@ -40,7 +40,7 @@ const usePersonalInfo = () => {
     handleDepositSol: depositSol,
     handleWithdrawSol: withdrawSol,
     updateFund: updateFund,
-    getStatus: getStatus
+    getStatus: getStatus,
   };
 };
 

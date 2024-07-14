@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { isMobile } from "react-device-detect";
-import useSocket from "../../hooks/useSocket";
-import usePersonalInfo from "../../hooks/usePersonalInfo";
-import formatAddress from "../../utils/formatAddress";
-import "./style.css";
+import React, { useState, useEffect } from 'react';
+import { isMobile } from 'react-device-detect';
+import useSocket from '../../hooks/useSocket';
+import usePersonalInfo from '../../hooks/usePersonalInfo';
+import formatAddress from '../../utils/formatAddress';
+import './style.css';
 
 const BettingStatus = () => {
   const curSocket = useSocket();
@@ -13,19 +13,19 @@ const BettingStatus = () => {
   const [blue_items, setBlueItems] = useState<any>([]);
 
   const addItems = (color: string, wallet: string, amount: number) => {
-    if (color === "green") {
+    if (color === 'green') {
       setGreenItems((prev: any) => {
         return [{ wallet: wallet, amount: amount }, ...prev];
       });
     }
 
-    if (color === "same") {
+    if (color === 'same') {
       setSameItems((prev: any) => {
         return [{ wallet: wallet, amount: amount }, ...prev];
       });
     }
 
-    if (color === "blue") {
+    if (color === 'blue') {
       setBlueItems((prev: any) => {
         return [{ wallet: wallet, amount: amount }, ...prev];
       });
@@ -34,13 +34,13 @@ const BettingStatus = () => {
 
   useEffect(() => {
     if (curSocket) {
-      curSocket.on("message", async (...data: any) => {
-        if (data[0].type === "betting_start") {
+      curSocket.on('message', async (...data: any) => {
+        if (data[0].type === 'betting_start') {
           setGreenItems([]);
           setSameItems([]);
           setBlueItems([]);
         }
-        if (data[0].type === "betting") {
+        if (data[0].type === 'betting') {
           if (data[0].type) {
             addItems(data[0].color, data[0].wallet, data[0].amount);
           } else {
@@ -66,30 +66,30 @@ const BettingStatus = () => {
               <div>
                 <img
                   src={
-                    props.bgColor === "#007BFF"
-                      ? "theme-assets/images/dice.png"
-                      : props.bgColor === "#77eb1f"
-                      ? "theme-assets/images/green.png"
-                      : "theme-assets/images/blue.png"
+                    props.bgColor === '#007BFF'
+                      ? 'theme-assets/images/dice.png'
+                      : props.bgColor === '#77eb1f'
+                        ? 'theme-assets/images/green.png'
+                        : 'theme-assets/images/blue.png'
                   }
                   alt="team-profile-1"
                   className="rounded-circle"
-                  style={{ width: "2.5rem" }}
+                  style={{ width: '2.5rem' }}
                 />
                 <img
                   src="theme-assets/images/user.svg"
                   alt="team-profile-1"
                   className="rounded-circle"
-                  style={{ width: "2.5rem" }}
+                  style={{ width: '2.5rem' }}
                 />
                 <span>{`${props.items.length}`}</span>
               </div>
               <div>
                 <img
-                  src={"theme-assets/images/dice-gold-coin.png"}
+                  src={'theme-assets/images/dice-gold-coin.png'}
                   alt="team-profile-1"
                   className="rounded-circle"
-                  style={{ width: "2.5rem" }}
+                  style={{ width: '2.5rem' }}
                 />
                 <span>
                   {props.items.reduce(
@@ -110,17 +110,17 @@ const BettingStatus = () => {
                       src="theme-assets/images/user.svg"
                       alt="team-profile-1"
                       className="rounded-circle"
-                      style={{ width: "2.5rem" }}
+                      style={{ width: '2.5rem' }}
                     />
 
                     <span>{formatAddress(item.wallet, 4)}</span>
                   </div>
                   <div>
                     <img
-                      src={"theme-assets/images/dice-gold-coin.png"}
+                      src={'theme-assets/images/dice-gold-coin.png'}
                       alt="team-profile-1"
                       className="rounded-circle"
-                      style={{ width: "2.5rem" }}
+                      style={{ width: '2.5rem' }}
                     />
                     <span>{item.amount}</span>
                   </div>
@@ -132,8 +132,8 @@ const BettingStatus = () => {
           <div
             className={
               winColor === props.color
-                ? "list-group col-4 pr-0 m-2 winning"
-                : "list-group col-4 pr-0 m-2"
+                ? 'list-group col-4 pr-0 m-2 winning'
+                : 'list-group col-4 pr-0 m-2'
             }
           >
             <div
@@ -143,30 +143,30 @@ const BettingStatus = () => {
               <div>
                 <img
                   src={
-                    props.bgColor === "#007BFF"
-                      ? "theme-assets/images/dice.png"
-                      : props.bgColor === "#77eb1f"
-                      ? "theme-assets/images/green.png"
-                      : "theme-assets/images/blue.png"
+                    props.bgColor === '#007BFF'
+                      ? 'theme-assets/images/dice.png'
+                      : props.bgColor === '#77eb1f'
+                        ? 'theme-assets/images/green.png'
+                        : 'theme-assets/images/blue.png'
                   }
                   alt="team-profile-1"
                   className="rounded-circle"
-                  style={{ width: "2.5rem" }}
+                  style={{ width: '2.5rem' }}
                 />
                 <img
                   src="theme-assets/images/user.svg"
                   alt="team-profile-1"
                   className="rounded-circle"
-                  style={{ width: "2.5rem" }}
+                  style={{ width: '2.5rem' }}
                 />
                 <span>{`${props.items.length}`}</span>
               </div>
               <div>
                 <img
-                  src={"theme-assets/images/dice-gold-coin.png"}
+                  src={'theme-assets/images/dice-gold-coin.png'}
                   alt="team-profile-1"
                   className="rounded-circle mr-2"
-                  style={{ width: "2.5rem" }}
+                  style={{ width: '2.5rem' }}
                 />
                 <span>
                   {props.items.reduce(
@@ -187,17 +187,17 @@ const BettingStatus = () => {
                       src="theme-assets/images/user.svg"
                       alt="team-profile-1"
                       className="rounded-circle"
-                      style={{ width: "2.5rem" }}
+                      style={{ width: '2.5rem' }}
                     />
 
                     <span>{formatAddress(item.wallet, 4)}</span>
                   </div>
                   <div>
                     <img
-                      src={"theme-assets/images/dice-gold-coin.png"}
+                      src={'theme-assets/images/dice-gold-coin.png'}
                       alt="team-profile-1"
                       className="rounded-circle"
-                      style={{ width: "2.5rem" }}
+                      style={{ width: '2.5rem' }}
                     />
                     <span>{item.amount}</span>
                   </div>
@@ -215,8 +215,8 @@ const BettingStatus = () => {
       <div
         className={
           isMobile
-            ? "d-flex flex-column justify-content-around"
-            : "d-flex justify-content-around"
+            ? 'd-flex flex-column justify-content-around'
+            : 'd-flex justify-content-around'
         }
       >
         <Status items={green_items} bgColor="#77eb1f" color="green" />

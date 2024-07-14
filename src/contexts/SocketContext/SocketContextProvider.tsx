@@ -1,5 +1,5 @@
-import React, { useState, useEffect, PropsWithChildren } from "react";
-import socketIOClient, { Socket } from "socket.io-client";
+import React, { useState, useEffect, PropsWithChildren } from 'react';
+import socketIOClient, { Socket } from 'socket.io-client';
 import { SERVER_URL } from './../../constant/env';
 
 export interface SocketInterface {
@@ -8,8 +8,8 @@ export interface SocketInterface {
 
 const mockSocket: Partial<Socket> = {
   on: (event, callback) => {
-    if (event === "someEvent") {
-      callback({ mockData: "Hello from mock!" });
+    if (event === 'someEvent') {
+      callback({ mockData: 'Hello from mock!' });
       console.debug({ event, callback });
     }
     console.debug({ event, callback });

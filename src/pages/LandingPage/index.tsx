@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import LandingContainer from "../../containers/LandingContainer";
+import LandingContainer from '../../containers/LandingContainer';
 
 const LandingPage = () => {
   return <LandingContainer />;

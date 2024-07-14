@@ -6,9 +6,19 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { ConnectWalletTaskBoxProps } from '../../types/wallet-types';
 type TaskBoxTypes = any;
 
-const ConnectWalletTaskBox: React.FC<ConnectWalletTaskBoxProps> = ({ type, points, buttonText, completed }) => (
+const ConnectWalletTaskBox: React.FC<ConnectWalletTaskBoxProps> = ({
+  type,
+  points,
+  buttonText,
+  completed,
+}) => (
   <>
-    <TaskBox type={type} points={points} completed={completed} className={styles.walletTaskBox}>
+    <TaskBox
+      type={type}
+      points={points}
+      completed={completed}
+      className={styles.walletTaskBox}
+    >
       <WalletMultiButton
         className={styles.customWalletMultiButton}
         style={{ backgroundColor: 'transparent', fontSize: '22px' }}
