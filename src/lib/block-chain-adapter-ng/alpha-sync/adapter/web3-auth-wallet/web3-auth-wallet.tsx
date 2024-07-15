@@ -1,80 +1,173 @@
-import React, { useState, useEffect } from 'react';
-import Web3 from 'web3';
-import { Web3Auth } from '@web3auth/web3auth';
-import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
+   "react";
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import Web3 from "web3";
 
-const clientId = process.env.REACT_APP_WEB3AUTH_CLIENT;
-if (!clientId) {
-  throw new Error('REACT_APP_WEB3AUTH_CLIENT environment variable is not set');
-}
+import "./App.css";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { useEffect, useState } from "react";
 
-const Web3AuthLoginButton: React.FC = () => {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<any>(null);
+const clientId = process.env.REACT_APP_WEB3AUTH_CLIENT || '';
+
+const chainConfig = {
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
+  blockExplorer: "https://etherscan.io/",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig: chainConfig },
+});
+ 
+const web3auth = new Web3Auth({ 
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: privateKeyProvider as any,
+});
+
+function Web3AuthLoginButton(this: any) {
+  const [provider, setProvider] = useState<IProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const initWeb3Auth = async () => {
-      const web3auth = new Web3Auth({
-        clientId,
-        chainConfig: { chainNamespace: 'eip155', chainId: '0x1' },
-      });
+    const init = async () => {
+      try {
+        await web3auth.initModal();
+        setProvider(web3auth.provider);
 
-      const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
-          network: 'mainnet',
-          clientId,
-        },
-      });
-
-      web3auth.configureAdapter(openloginAdapter as unknown as any);
-      await web3auth.initModal();
-
-      setWeb3auth(web3auth);
+        if (web3auth.connected) {
+          setLoggedIn(true);
+        }
+      } catch (error) {
+        console.error("Error initializing Web3Auth:", error);
+      }
     };
 
-    initWeb3Auth();
+    init();
   }, []);
 
   const login = async () => {
-    if (web3auth) {
+    try {
       const web3authProvider = await web3auth.connect();
       setProvider(web3authProvider);
-
-      if (web3authProvider) {
-        const web3 = new Web3(web3authProvider as any);
-        const accounts = await web3.eth.getAccounts();
-        console.log('Connected accounts:', accounts);
+      if (web3auth.connected) {
+        setLoggedIn(true);
       }
+    } catch (error) {
+      console.error("Error connecting with Web3Auth:", error);
     }
   };
 
-  const disconnectWallet = async () => {
-    if (web3auth && provider) {
+  const getUserInfo = async () => {
+    try {
+      const user = await web3auth.getUserInfo();
+      uiConsole(user);
+    } catch (error) {
+      console.error("Error getting user info:", error);
+    }
+  };
+
+  const logout = async () => {
+    try {
       await web3auth.logout();
       setProvider(null);
-      console.log('Wallet disconnected');
+      setLoggedIn(false);
+      uiConsole("Logged out");
+    } catch (error) {
+      console.error("Error logging out:", error);
     }
   };
 
-  return (
-    <div>
-      {provider ? (
-        <button
-          className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated"
-          onClick={disconnectWallet}
-        >
-          Disconnect Wallet
+  const getAccounts = async () => {
+    try {
+      if (!provider) {
+        uiConsole("Provider not initialized yet");
+        return;
+      }
+      const web3 = new Web3(provider as any);
+      const address = await web3.eth.getAccounts();
+      uiConsole("Accounts:", address);
+    } catch (error) {
+      console.error("Error getting accounts:", error);
+    }
+  };
+
+  const getBalance = async () => {
+    try {
+      if (!provider) {
+        uiConsole("Provider not initialized yet");
+        return;
+      }
+      const web3 = new Web3(provider as any);
+      const address = (await web3.eth.getAccounts())[0];
+      const balance = web3.utils.fromWei(
+        await web3.eth.getBalance(address),
+        "ether"
+      );
+      uiConsole("Balance:", balance, "ETH");
+    } catch (error) {
+      console.error("Error getting balance:", error);
+    }
+  };
+
+  const signMessage = async () => {
+    try {
+      if (!provider) {
+        uiConsole("Provider not initialized yet");
+        return;
+      }
+      const web3 = new Web3(provider as any);
+      const fromAddress = (await web3.eth.getAccounts())[0];
+      const originalMessage = "YOUR_MESSAGE";
+      const signedMessage = await web3.eth.personal.sign(
+        originalMessage,
+        fromAddress,
+        "test password!" 
+      );
+      uiConsole("Signed message:", signedMessage);
+    } catch (error) {
+      console.error("Error signing message:", error);
+    }
+  };
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+    console.log(...args);
+  }
+
+  const loggedInView = (
+    <>
+      <div className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
+        <button onClick={logout} className="card">
+          Log Out
         </button>
-      ) : (
-        <button
-          className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated"
-          onClick={login}
-        >
-          Login with Web3Auth
-        </button>
-      )}
-    </div>
+      </div>
+    </> 
   );
-};
+
+  const unloggedInView = (
+     <button
+      className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated"
+      onClick={this.connectWallet}
+    >        
+      Connect Wallet
+    </button>
+  );
+
+  return (
+    <>
+      <div>{loggedIn ? loggedInView : unloggedInView}</div>
+    </>
+  );
+}
 
 export default Web3AuthLoginButton;

@@ -26,7 +26,7 @@ import {
   CustomPhantomAdapter,
   EvmWalletConnect,
   MetaWMaskWalletConnect,
-  Web3AuthConnect,
+  Web3AuthLoginButton,
 } from './lib/block-chain-adapter-ng/alpha-sync/adapter';
 
 import React from 'react';
@@ -71,7 +71,7 @@ export {
   SolanaConnect,
   EvmWalletConnect,
   MetaWMaskWalletConnect,
-  Web3AuthConnect,
+  Web3AuthLoginButton,
   CustomPhantomAdapter,
   browserWindowConnect,
 };

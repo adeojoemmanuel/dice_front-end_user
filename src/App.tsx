@@ -1,5 +1,5 @@
 import React from 'react';
-import { Web3AuthConnect, SolanaConnect } from './provider';
+import { Web3AuthLoginButton, SolanaConnect } from './provider';
 import AppContent from './AppContent';
 
 import {
@@ -14,7 +14,7 @@ export {
   EvmWalletConnect,
   CustomPhantomAdapter,
   MetaWMaskWalletConnect,
-  Web3AuthConnect,
+  Web3AuthLoginButton,
 };
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
         <br />
         <EvmWalletConnect />
       </React.StrictMode>
-      <Web3AuthConnect />
+      <Web3AuthLoginButton />
     </div>
   );
 }
