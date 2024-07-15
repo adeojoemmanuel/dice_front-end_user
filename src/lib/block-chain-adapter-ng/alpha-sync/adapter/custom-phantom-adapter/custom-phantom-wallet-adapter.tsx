@@ -20,7 +20,7 @@ import {
 // import crypto from 'crypto';
 import crypto from 'crypto-browserify';
 
-import { routes } from '../../types/routes';
+import { routes } from '../../interface-types/routes';
 
 global.Buffer = global.Buffer || Buffer;
 

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import TaskBox from '../connection-box/task-box';
 import styles from './wallet-button.module.scss';
-import { WrongWalletTaskBoxProps } from '../../types/wallet-types';
+import { WrongWalletTaskBoxProps } from '../../interface-types/wallet-types';
 
 const WrongWalletTaskBox: React.FC<WrongWalletTaskBoxProps> = ({
   type,

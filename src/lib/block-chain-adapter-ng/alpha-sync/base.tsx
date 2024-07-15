@@ -20,7 +20,7 @@ import { clusterApiUrl } from '@solana/web3.js';
 import ConnectWalletTaskBox from './component/multi-chain-wallet-adapters/connect-task-bar';
 import WrongWalletTaskBox from './component/multi-chain-wallet-adapters/wrong-wallet-state';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { WalletConnectProps, UserWalletItem } from './types/wallet-types';
+import { WalletConnectProps, UserWalletItem } from './interface-types/wallet-types';
 import { CustomPhantomAdapter } from './adapter/custom-phantom-adapter';
 
 require('@solana/wallet-adapter-react-ui/styles.css');

@@ -2,24 +2,25 @@
 import React, { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { Web3AuthConfig } from './../../interface-types/index'
 import Web3 from "web3";
 
-import "./App.css";
+import "./../../styles.css";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { getEnvVar } from './../../utils/';
 
-const clientId = process.env.REACT_APP_WEB3AUTH_CLIENT || '';
+const clientId = getEnvVar('REACT_APP_WEB3AUTH_CLIENT');
 
-
-const chainConfig = {
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
+const chainConfig:Web3AuthConfig  = {
+  chainId: getEnvVar('REACT_APP_CHAINID'),
+  rpcTarget: getEnvVar('REACT_APP_RPC_TARGET'),
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
-  blockExplorer: "https://etherscan.io/",
+  displayName: getEnvVar('REACT_APP_DISPLAY_NAME'),
+  blockExplorerUrl: getEnvVar('REACT_APP_BLOCKER_EXPLORER'),
+  ticker: getEnvVar('REACT_APP_TICKER'),
+  tickerName: getEnvVar('REACT_APP_TICKER_NAME'),
+  logo: getEnvVar('REACT_APP_LOGO'),
+  blockExplorer: getEnvVar('REACT_APP_BLOCKER_EXPLORER'),
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -48,6 +49,7 @@ function Web3AuthLoginButton() {
         console.error("Error initializing Web3Auth:", error);
       }
     };
+    console.log(provider);
 
     init();
   }, []);
@@ -64,15 +66,6 @@ function Web3AuthLoginButton() {
     }
   };
 
-  const getUserInfo = async () => {
-    try {
-      const user = await web3auth.getUserInfo();
-      uiConsole(user);
-    } catch (error) {
-      console.error("Error getting user info:", error);
-    }
-  };
-
   const logout = async () => {
     try {
       await web3auth.logout();
@@ -81,58 +74,6 @@ function Web3AuthLoginButton() {
       uiConsole("Logged out");
     } catch (error) {
       console.error("Error logging out:", error);
-    }
-  };
-
-  const getAccounts = async () => {
-    try {
-      if (!provider) {
-        uiConsole("Provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
-      const address = await web3.eth.getAccounts();
-      uiConsole("Accounts:", address);
-    } catch (error) {
-      console.error("Error getting accounts:", error);
-    }
-  };
-
-  const getBalance = async () => {
-    try {
-      if (!provider) {
-        uiConsole("Provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
-      const address = (await web3.eth.getAccounts())[0];
-      const balance = web3.utils.fromWei(
-        await web3.eth.getBalance(address),
-        "ether"
-      );
-      uiConsole("Balance:", balance, "ETH");
-    } catch (error) {
-      console.error("Error getting balance:", error);
-    }
-  };
-
-  const signMessage = async () => {
-    try {
-      if (!provider) {
-        uiConsole("Provider not initialized yet");
-        return;
-      }
-      const web3 = new Web3(provider as any);
-      const fromAddress = (await web3.eth.getAccounts())[0];
-      const originalMessage = "MESSAGE_TO_BE_Encrypted";
-      const signedMessage = await web3.eth.personal.sign(
-        originalMessage,
-        fromAddress,
-        'test password!'
-      );
-      uiConsole("Signed message:", signedMessage);
-    } catch (error) {
-      console.error("Error signing message:", error);
     }
   };
 
@@ -156,7 +97,7 @@ function Web3AuthLoginButton() {
     <button onClick={login} className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
       Login
     </button>
-  );
+  );  
 
   return (
     <>

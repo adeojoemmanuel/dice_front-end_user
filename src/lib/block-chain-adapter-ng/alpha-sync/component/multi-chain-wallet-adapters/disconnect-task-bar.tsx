@@ -4,7 +4,7 @@ import TaskBox from '../connection-box/task-box';
 import styles from './wallet-button.module.scss';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DisConnectWalletTaskBoxProps } from '../../types/wallet-types';
+import { DisConnectWalletTaskBoxProps } from '../../interface-types/wallet-types';
 
 const formatWalletAddressFunc = (address: string): string => {
   if (typeof address !== 'string' || address.length === 0) {
