@@ -20,16 +20,17 @@ export {
 function App() {
   return (
     <div>
-      <br />
-      <React.StrictMode>
-        <SolanaConnect>
-          <AppContent />
-        </SolanaConnect>
-        <br />
-        <br />
-        <EvmWalletConnect />
-      </React.StrictMode>
-      <Web3AuthLoginButton />
+      <>
+        <React.StrictMode>
+          <SolanaConnect>
+            <AppContent />
+          </SolanaConnect>
+          <br />
+          <br />
+          <EvmWalletConnect />
+        </React.StrictMode>
+        <Web3AuthLoginButton />
+      </>
     </div>
   );
 }

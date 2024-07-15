@@ -1,13 +1,14 @@
-   "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import Web3 from "web3";
 
 import "./App.css";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { useEffect, useState } from "react";
 
 const clientId = process.env.REACT_APP_WEB3AUTH_CLIENT || '';
+
 
 const chainConfig = {
   chainId: "0x1",
@@ -24,14 +25,14 @@ const chainConfig = {
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig: chainConfig },
 });
- 
-const web3auth = new Web3Auth({ 
+
+const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider: privateKeyProvider as any,
-});
+})
 
-function Web3AuthLoginButton(this: any) {
+function Web3AuthLoginButton() {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -40,7 +41,6 @@ function Web3AuthLoginButton(this: any) {
       try {
         await web3auth.initModal();
         setProvider(web3auth.provider);
-
         if (web3auth.connected) {
           setLoggedIn(true);
         }
@@ -124,11 +124,11 @@ function Web3AuthLoginButton(this: any) {
       }
       const web3 = new Web3(provider as any);
       const fromAddress = (await web3.eth.getAccounts())[0];
-      const originalMessage = "YOUR_MESSAGE";
+      const originalMessage = "MESSAGE_TO_BE_Encrypted";
       const signedMessage = await web3.eth.personal.sign(
         originalMessage,
         fromAddress,
-        "test password!" 
+        'test password!'
       );
       uiConsole("Signed message:", signedMessage);
     } catch (error) {
@@ -145,27 +145,22 @@ function Web3AuthLoginButton(this: any) {
   }
 
   const loggedInView = (
-    <>
-      <div className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
-        <button onClick={logout} className="card">
+      <div>
+        <button onClick={logout} className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
           Log Out
         </button>
       </div>
-    </> 
   );
 
   const unloggedInView = (
-     <button
-      className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated"
-      onClick={this.connectWallet}
-    >        
-      Connect Wallet
+    <button onClick={login} className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
+      Login
     </button>
   );
 
   return (
     <>
-      <div>{loggedIn ? loggedInView : unloggedInView}</div>
+      {loggedIn ? loggedInView : unloggedInView}
     </>
   );
 }

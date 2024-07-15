@@ -1,4 +1,4 @@
-interface OpenloginAdapterConfig {
+export interface OpenloginAdapterConfig {
   adapterSettings: {
     clientId: string;
     network: "testnet" | "mainnet";
@@ -17,7 +17,6 @@ interface OpenloginAdapterConfig {
         typeOfLogin: "google";
         clientId: string;
       };
-      // facebook & twitter 
     };
   };
   loginSettings?: {

@@ -248,8 +248,6 @@ export const PersonalInfoContextProvider: React.FC<PropsWithChildren> = ({
           )
         );
 
-        // console.log("instruction", instructionsMatrix);
-        // await sendTransaction(transaction, conn);
         const txns = (
           await sendTransactions(
             conn,
