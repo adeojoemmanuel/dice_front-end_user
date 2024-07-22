@@ -1,20 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { Web3AuthConfig } from './../../interface-types/index'
-import Web3 from "web3";
+import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, ChainNamespaceType, IProvider, WEB3AUTH_NETWORK, WALLET_ADAPTERS } from "@web3auth/base";
+import { Web3AuthConfig, UIConfig } from './../../interface-types/'
 
 import "./../../styles.css";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { getEnvVar } from './../../utils/';
+import { getEnvVar } from './../../utils/'; 
 
 const clientId = getEnvVar('REACT_APP_WEB3AUTH_CLIENT');
 
-const chainConfig:Web3AuthConfig  = {
-  chainId: getEnvVar('REACT_APP_CHAINID'),
+const chainConfig = {
+  chainId: getEnvVar('REACT_APP_CHAINID'),  
   rpcTarget: getEnvVar('REACT_APP_RPC_TARGET'),
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainNamespace: CHAIN_NAMESPACES.EIP155 as ChainNamespaceType,
   displayName: getEnvVar('REACT_APP_DISPLAY_NAME'),
   blockExplorerUrl: getEnvVar('REACT_APP_BLOCKER_EXPLORER'),
   ticker: getEnvVar('REACT_APP_TICKER'),
@@ -24,14 +23,31 @@ const chainConfig:Web3AuthConfig  = {
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: chainConfig },
-});
+  config: { chainConfig },
+}); 
 
-const web3auth = new Web3Auth({
+const web3AuthOptions: Web3AuthOptions = {
   clientId,
+  chainConfig,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider: privateKeyProvider as any,
-})
+  uiConfig: {
+    appName: getEnvVar('REACT_APP_DISPLAY_NAME'),
+    theme: {
+      primary: getEnvVar('REACT_APP_THEME'),
+    },
+    mode: "auto",
+    logoLight: getEnvVar('REACT_APP_LOGO_LIGHT'),
+    logoDark: getEnvVar('REACT_APP_LOGO_DARK'),
+    defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+    loginGridCol: parseInt(getEnvVar('REACT_APP_LOGIN_GRID_COL')) as 2 | 3 | undefined,
+    primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+  }
+};
+
+
+const web3auth = new Web3Auth(web3AuthOptions);
+
 
 function Web3AuthLoginButton() {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -86,11 +102,11 @@ function Web3AuthLoginButton() {
   }
 
   const loggedInView = (
-      <div>
-        <button onClick={logout} className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
-          Log Out
-        </button>
-      </div>
+    <div>
+      <button onClick={logout} className="btn btn-lg btn-gradient-purple btn-glow mb-2 animated">
+        Log Out
+      </button>
+    </div>
   );
 
   const unloggedInView = (

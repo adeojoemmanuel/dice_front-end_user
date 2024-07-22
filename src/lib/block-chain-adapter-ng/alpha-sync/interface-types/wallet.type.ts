@@ -29,7 +29,7 @@ interface OpenloginAdapterConfig {
   };
 }
 
-interface UIConfig {
+interface c {
   appName: string;
   mode: "light" | "dark" | "auto";
   loginMethodsOrder: string[];

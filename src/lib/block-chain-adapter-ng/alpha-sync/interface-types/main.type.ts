@@ -25,8 +25,7 @@ export interface OpenloginAdapterConfig {
   loginSettings?: {
     mfaLevel?: "optional" | "mandatory";
   };
-}
-
+} 
 
 export interface Web3AuthConfig {
   chainId: string,
@@ -50,4 +49,16 @@ export interface ChainConfig {
   tickerName: string;
   logo: string;
   blockExplorer: string;
+}
+
+export interface UIConfig {
+  appName: string;
+  theme: any;
+  mode: "light" | "dark" | "auto";
+  loginMethodsOrder: string[];
+  logoLight: string;
+  logoDark: string;
+  defaultLanguage: string;
+  loginGridCol: number;
+  primaryButton: "externalLogin" | "socialLogin" | "emailLogin";
 }

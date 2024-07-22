@@ -1,3 +1,3 @@
-import { Web3AuthConfig } from './main.type';
+import { Web3AuthConfig, UIConfig, ChainConfig } from './main.type';
 
-export { Web3AuthConfig };
+export { Web3AuthConfig, UIConfig, ChainConfig };
